@@ -1,5 +1,5 @@
 [build]
-  base = "dist"
-  command = "npm run build"
+  base = "/"
+  command = "yarn build"
   publish = "dist/client"
   functions = "dist/server"
