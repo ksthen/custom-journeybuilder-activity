@@ -120,3 +120,23 @@ import { join } from 'path';
     }),
 
 //https://dev.to/hendrikfoo/building-full-stack-web-applications-with-angular-nestjs-and-nx-a-match-made-in-heaven-5fh7
+
+build the client:
+nx build client
+
+package.json
+
+"files": ["dist/apps/client", "dist/apps/api"],
+
+    "serve": "node dist/apps/api/main.js"
+
+## Netlify
+
+addd netlify.toml
+[build]
+command = "npm run build"
+publish = "dist/"
+functions = "dist/server"
+
+.node-version
+12.20.0
