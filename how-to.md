@@ -24,6 +24,17 @@ localhost:4200
 localhost:3333/api
 localhost:4200/api
 
+### Add library for shared interfaces
+
+npx nx g @nrwl/workspace:lib data
+
+libs/data
+
+data.ts
+export interface ApiTest {
+message: string;
+}
+
 ### Connect the client to the server
 
 #### app.module
@@ -80,3 +91,32 @@ add .env to .gitignore
 
 git init
 git add \*
+git commit -m 'init'
+git remote add origin https://github.com/ksthen/custom-journeybuilder-activity
+
+Add keys
+https://stackoverflow.com/questions/68775869/support-for-password-authentication-was-removed-please-use-a-personal-access-to
+
+git push -u origin master
+
+### Build and serve both apps
+
+yarn add concurrently
+package.json
+"start:client": "nx serve client",
+"start:server": "nx serve server",
+"dev": "concurrently -p=\"{name}\" -n=\"Angular,NestJS\" -c=\"green,blue\" \"npm run start:client\" \"npm run start:server\""
+
+yarn add @nestjs/serve-static
+
+server app.module
+
+// Static hosting of angular app
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
+
+//https://dev.to/hendrikfoo/building-full-stack-web-applications-with-angular-nestjs-and-nx-a-match-made-in-heaven-5fh7

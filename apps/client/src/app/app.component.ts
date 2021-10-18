@@ -2,10 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-interface ApiTest {
-  message: string;
-}
+import { ApiTest } from '@custom-journeybuilder-activity/data';
 
 @Component({
   selector: 'custom-journeybuilder-activity-root',
