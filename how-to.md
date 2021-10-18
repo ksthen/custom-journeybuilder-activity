@@ -75,3 +75,8 @@ JWT='TEST'
 .gitignore
 
 add .env to .gitignore
+
+### Init GIT
+
+git init
+git add \*
