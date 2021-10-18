@@ -1710,6 +1710,13 @@
     optional "0.1.4"
     tslib "2.2.0"
 
+"@netlify/functions@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@netlify/functions/-/functions-0.7.2.tgz#9d39553b94e7aaa86dddf515bdbaed3e89998122"
+  integrity sha512-xf45ZqQukMxmlkqNMC5BXdFMaVZ8VqF42MV5zA5nKVOh2V0mhYlcbTYlVbS/K2/rtvQ3W8lxxixYl4NT7kq6Bg==
+  dependencies:
+    is-promise "^4.0.0"
+
 "@ngtools/webpack@12.2.10":
   version "12.2.10"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-12.2.10.tgz#38d4a5ee9cc39012e9ba2f987f6c1c07b132b19e"
@@ -1863,7 +1870,7 @@
     "@nrwl/linter" "12.10.0"
     "@nrwl/node" "12.10.0"
 
-"@nrwl/node@12.10.0":
+"@nrwl/node@12.10.0", "@nrwl/node@^12.10.0":
   version "12.10.0"
   resolved "https://registry.yarnpkg.com/@nrwl/node/-/node-12.10.0.tgz#1065dfb0bea758d7c1e2f89a00c97e191408be86"
   integrity sha512-21bBgDOhmUs3o7oqjfb78weRevh7lk+5ZIWE4n6o+x/AYx4iXPn8mUQFnIfl7smRRVfuRh0GnqZg7BEy8fj+sg==
@@ -6560,6 +6567,11 @@ is-potential-custom-element-name@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.1.tgz#171ed6f19e3ac554394edf78caa05784a45bebb5"
   integrity sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==
+
+is-promise@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-4.0.0.tgz#42ff9f84206c1991d26debf520dd5c01042dd2f3"
+  integrity sha512-hvpoI6korhJMnej285dSg6nu1+e6uxs7zG3BYAm5byqDsgJNWwxzM6z6iZiAgQR4TJ30JmBTOwqZUw3WlyH3AQ==
 
 is-regex@^1.0.4, is-regex@^1.1.4:
   version "1.1.4"

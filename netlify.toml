@@ -2,4 +2,4 @@
   base = ""
   command = "yarn build"
   publish = "dist/apps/client"
-  functions = "dist/apps/server"
+  functions = "dist/apps/api"

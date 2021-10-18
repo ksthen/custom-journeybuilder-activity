@@ -140,3 +140,12 @@ functions = "dist/server"
 
 .node-version
 12.20.0
+
+
+
+### Create a new cloud function
+
+https://docs.netlify.com/functions/build-with-typescript/
+
+yarn add @nrwl/node
+yarn add @netlify/functions
