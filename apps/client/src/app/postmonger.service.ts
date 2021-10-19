@@ -13,13 +13,17 @@ export class PostMongerService {
   public requestTokens$ = new BehaviorSubject({});
   public requstedEnPoints$ = new BehaviorSubject({});
 
-  public clickNext$ = new BehaviorSubject({});
-
   private connection: any;
 
   constructor() {
     console.log('Server constructor');
     this.connection = new Postmonger.Session();
+
+    // Capture events and store in observables
+
+    this.connection.on((event) => {
+      console.log('event', event);
+    });
 
     this.connection.on('initActivity', (payload: IInitPayload) => {
       console.log('Init activity', payload);
@@ -38,14 +42,6 @@ export class PostMongerService {
 
     this.connection.on('clickedNext', () => {
       console.log('Next step clicked');
-    });
-
-    this.connection.on('clickedBack', () => {
-      console.log('Click back');
-    });
-
-    this.connection.on('gotoStep', (step: any) => {
-      console.log('Goto', step);
     });
   }
 
