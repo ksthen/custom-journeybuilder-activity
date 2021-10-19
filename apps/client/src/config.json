@@ -42,5 +42,6 @@
       "hideHeader": true,
       "size": "scm-sm"
     }
-  }
+  },
+  "wizardSteps": [{ "label": "Step 1", "key": "step1", "active": false }]
 }

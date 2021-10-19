@@ -24,4 +24,8 @@ export class AppComponent implements OnInit {
     this.pm.requestTokens();
     this.pm.requestEndpoints();
   }
+
+  toggleActive(valid: boolean) {}
+
+  enableSave(status: boolean) {}
 }

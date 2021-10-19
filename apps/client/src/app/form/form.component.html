@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+  <div class="slds-form">
+    <div
+      class="slds-form-element"
+      [ngClass]="{
+        'slds-has-error': !form.get('id')?.valid && form.get('id')?.touched
+      }"
+    >
+      <label class="slds-form-element__label" for="text-input-id-47">
+        <abbr class="slds-required" title="required">* </abbr>Campaign ID</label
+      >
+      <div class="slds-form-element__control">
+        <input
+          required=""
+          formControlName="id"
+          type="text"
+          id="text-input-id-47"
+          placeholder="Add campaign ID…"
+          required=""
+          class="slds-input"
+        />
+      </div>
+      <div
+        class="slds-form-element__help"
+        *ngIf="!form.get('id')?.valid && form.get('id')?.touched"
+      >
+        Enter Campaign ID.
+      </div>
+    </div>
+
+    <div
+      class="slds-form-element slds-p-top_large"
+      [ngClass]="{
+        'slds-has-error': !form.get('message')?.valid && form.get('id')?.touched
+      }"
+    >
+      <label class="slds-form-element__label" for="text-input-id-47">
+        <abbr class="slds-required" title="required">* </abbr>Campaign
+        Message</label
+      >
+      <div class="slds-form-element__control">
+        <textarea
+          formControlName="message"
+          id="textarea-id-01"
+          placeholder="Add campaign message…"
+          class="slds-textarea"
+        ></textarea>
+      </div>
+      <div
+        class="slds-form-element__help"
+        *ngIf="!form.get('message')?.valid && form.get('message')?.touched"
+      >
+        Enter message.
+      </div>
+    </div>
+  </div>
+</form>
