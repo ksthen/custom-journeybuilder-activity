@@ -1,0 +1,46 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "assets/icon.png"
+  },
+  "type": "REST",
+  "lang": {
+    "en-US": {
+      "description": "Custom Activity"
+    }
+  },
+  "arguments": {
+    "execute": {
+      "url": "https://$DOMAIN/api/execute",
+      "verb": "POST",
+      "body": "",
+      "header": "",
+      "format": "json",
+      "timeout": 10000
+    }
+  },
+  "configurationArguments": {
+    "save": {
+      "url": "https://$DOMAIN/api/save",
+      "verb": "POST",
+    },
+    "publish": {
+      "url": "https://$DOMAIN/api/publish",
+      "verb": "POST",
+    },
+    "stop": {
+      "url": "https://$DOMAIN/api/stop",
+      "verb": "POST",
+    },
+    "validate": {
+      "url": "https://$DOMAIN/api/validate",
+      "verb": "POST",
+    }
+  },
+  "userInterfaces": {
+    "configInspector": {
+      "hideHeader": true,
+      "size": "scm-sm"
+    }
+  }
+}

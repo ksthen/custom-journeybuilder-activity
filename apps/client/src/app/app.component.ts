@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiTest } from '@custom-journeybuilder-activity/data';
+import { PostMongerService } from './postmonger.service';
 
 @Component({
   selector: 'custom-journeybuilder-activity-root',
@@ -10,7 +11,7 @@ import { ApiTest } from '@custom-journeybuilder-activity/data';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private pm: PostMongerService) {}
 
   public apiTest$!: Observable<ApiTest>;
 
@@ -18,5 +19,9 @@ export class AppComponent implements OnInit {
     this.apiTest$ = this.http
       .get('./api')
       .pipe(map((response) => response as ApiTest));
+
+    this.pm.ready();
+    this.pm.requestTokens();
+    this.pm.requestEndpoints();
   }
 }

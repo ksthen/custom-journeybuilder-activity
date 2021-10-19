@@ -101,12 +101,6 @@ git push -u origin master
 
 ### Build and serve both apps
 
-yarn add concurrently
-package.json
-"start:client": "nx serve client",
-"start:server": "nx serve server",
-"dev": "concurrently -p=\"{name}\" -n=\"Angular,NestJS\" -c=\"green,blue\" \"npm run start:client\" \"npm run start:server\""
-
 yarn add @nestjs/serve-static
 
 server app.module
@@ -119,8 +113,6 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'client'),
     }),
 
-//https://dev.to/hendrikfoo/building-full-stack-web-applications-with-angular-nestjs-and-nx-a-match-made-in-heaven-5fh7
-
 build the client:
 nx build client
 
@@ -128,24 +120,106 @@ package.json
 
 "files": ["dist/apps/client", "dist/apps/api"],
 
-    "serve": "node dist/apps/api/main.js"
+    "build": "nx build client; nx build server",
+    "start": "node dist/apps/server/main.js"
 
-## Netlify
-
-addd netlify.toml
-[build]
-command = "npm run build"
-publish = "dist/"
-functions = "dist/server"
+## Heroku
 
 .node-version
 12.20.0
 
+Create new pipeline
+Link to github master branch to production
 
+Heroku will run:
+npm run build
+npm run serve
 
-### Create a new cloud function
+Add environmental variables
+Settings - config vars - this will populate the ConfigService
 
-https://docs.netlify.com/functions/build-with-typescript/
+## SLDS
 
-yarn add @nrwl/node
-yarn add @netlify/functions
+yarn add
+
+angular.json / workspace.json
+
+client - assets
+{
+"glob": "\*_/_",
+"input": "node_modules/@salesforce-ux/design-system/assets/",
+"output": "/assets"
+}
+
+"node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css",
+
+Restart server
+
+## Front-end
+
+https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/custom-activity-ui.htm
+
+config.json in client/src folder
+
+{
+"workflowApiVersion": "1.1",
+"metaData": {
+"icon": "images/icon.png"
+},
+"type": "REST",
+"lang": {
+"en-US": {
+"description": "Custom Activity"
+}
+},
+"arguments": {
+"execute": {
+"url": "https://$DOMAIN/api/execute",
+      "verb": "POST",
+      "body": "",
+      "header": "",
+      "format": "json",
+      "useJwt": true,
+      "timeout": 10000
+    }
+  },
+  "configurationArguments": {
+    "save": {
+      "url": "https://$DOMAIN/api/save",
+"verb": "POST",
+"useJwt": true
+},
+"publish": {
+"url": "https://$DOMAIN/api/publish",
+      "verb": "POST",
+      "useJwt": true
+    },
+    "stop": {
+      "url": "https://$DOMAIN/api/stop",
+"verb": "POST",
+"useJwt": true
+},
+"validate": {
+"url": "https://$DOMAIN/api/validate",
+"verb": "POST",
+"useJwt": true
+}
+},
+"userInterfaces": {
+"configInspector": {
+"hideHeader": true,
+"size": "scm-sm"
+}
+}
+}
+
+add config.json to build
+assets: ["apps/client/src/config.json"
+
+## Postmonger
+
+yarn add postmonger
+
+since no types
+add file globals.d.ts
+declare module "postmonger"

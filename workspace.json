@@ -68,8 +68,20 @@
             "polyfills": "apps/client/src/polyfills.ts",
             "tsConfig": "apps/client/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/client/src/favicon.ico", "apps/client/src/assets"],
-            "styles": ["apps/client/src/styles.scss"],
+            "assets": [
+              "apps/client/src/favicon.ico",
+              "apps/client/src/assets",
+              "apps/client/src/config.json",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@salesforce-ux/design-system/assets/",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              "apps/client/src/styles.scss",
+              "node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css"
+            ],
             "scripts": []
           },
           "configurations": {
