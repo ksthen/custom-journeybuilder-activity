@@ -7,11 +7,34 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
+import * as helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          'default-src': ["'self'"],
+          'frame-ancestors': [
+            "'self'",
+            `https://mc.${process.env.STACK}.exacttarget.com`,
+            `https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
+          ],
+        },
+      },
+    })
+  );
 
-  app.enableCors();
+  app.enableCors({
+    origin: [
+      'http://localhost:3333',
+      'http://localhost:4200',
+      `https://mc.${process.env.STACK}.exacttarget.com`,
+      `https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
+    ],
+    credentials: true,
+  });
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);

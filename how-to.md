@@ -216,6 +216,8 @@ config.json in client/src folder
 add config.json to build
 assets: ["apps/client/src/config.json"
 
+add icon to assets
+
 ## Postmonger
 
 yarn add postmonger
@@ -229,3 +231,39 @@ declare module "postmonger"
 APps install package
 Journey builder activity
 Add component
+Type: custom
+URL to heroku
+
+## Security
+
+Server:
+
+Add STACK to .env and heroku config
+
+Add cors
+app.enableCors({
+origin: [
+'http://localhost:3333',
+'http://localhost:4200',
+`https://mc.${process.env.STACK}.exacttarget.com`,
+`https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
+],
+credentials: true,
+});
+
+Add helmet
+
+app.use(
+helmet({
+contentSecurityPolicy: {
+directives: {
+'default-src': ["'self'"],
+'frame-ancestors': [
+"'self'",
+`https://mc.${process.env.STACK}.exacttarget.com`,
+`https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
+],
+},
+},
+})
+);

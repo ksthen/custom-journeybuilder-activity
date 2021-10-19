@@ -63,6 +63,7 @@
     "@nestjs/serve-static": "^2.2.2",
     "@netlify/functions": "^0.7.2",
     "@salesforce-ux/design-system": "^2.16.2",
+    "helmet": "^4.6.0",
     "postmonger": "^0.0.16",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.6.0",
