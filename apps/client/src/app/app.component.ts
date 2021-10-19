@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private pm: PostMongerService) {}
 
   public apiTest$!: Observable<ApiTest>;
+  public currentStep = 'step1';
 
   ngOnInit() {
     this.apiTest$ = this.http
@@ -25,7 +26,9 @@ export class AppComponent implements OnInit {
     this.pm.requestEndpoints();
   }
 
-  toggleActive(valid: boolean) {}
+  toggleActive(valid: boolean) {
+    this.pm.activateStep(valid, this.currentStep);
+  }
 
   enableSave(status: boolean) {}
 }

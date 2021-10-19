@@ -36,7 +36,7 @@ export class PostMongerService {
       this.requstedEnPoints$.next(endpoints);
     });
 
-    this.connection.on('clickNext', () => {
+    this.connection.on('clickedNext', () => {
       console.log('Next step clicked');
     });
 
@@ -59,5 +59,15 @@ export class PostMongerService {
 
   requestEndpoints() {
     this.connection.trigger('requestEndpoints');
+  }
+
+  activateStep(status: boolean, step: string): void {
+    const settings = {
+      button: 'step1',
+      text: 'done',
+      visible: true,
+      enabled: status,
+    };
+    this.connection.trigger('updateButton', settings);
   }
 }
