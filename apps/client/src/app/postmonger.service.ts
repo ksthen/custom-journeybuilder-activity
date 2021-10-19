@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Postmonger from 'postmonger';
 import { BehaviorSubject, bindCallback, Observable } from 'rxjs';
-import { IEndPoints, IInitPayload, ITokens } from './models';
+import { IActivityData, IEndPoints, IInitPayload, ITokens } from './models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +9,7 @@ import { IEndPoints, IInitPayload, ITokens } from './models';
 
 // https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/using-postmonger.htm
 export class PostMongerService {
-  public initActivity$ = new BehaviorSubject({});
-  public requestTokens$ = new BehaviorSubject({});
-  public requstedEnPoints$ = new BehaviorSubject({});
+  public payload$ = new BehaviorSubject({});
 
   private connection: any;
 
@@ -19,51 +17,49 @@ export class PostMongerService {
     console.log('Server constructor');
     this.connection = new Postmonger.Session();
 
-    // Capture events and store in observables
-
-    this.connection.on((event) => {
-      console.log('event', event);
-    });
-
     this.connection.on('initActivity', (payload: IInitPayload) => {
       console.log('Init activity', payload);
-      this.initActivity$.next(payload);
-    });
-
-    this.connection.on('requestedTokens', (tokens: ITokens) => {
-      console.log('Request tokens', tokens);
-      this.requestTokens$.next(tokens);
-    });
-
-    this.connection.on('requestedEndpoints', (endpoints: IEndPoints) => {
-      console.log('Requested endpoints', endpoints);
-      this.requstedEnPoints$.next(endpoints);
+      this.payload$.next(payload);
     });
 
     this.connection.on('clickedNext', () => {
       console.log('Next step clicked');
+      this.saveData();
     });
-  }
 
-  ready() {
     this.connection.trigger('ready');
+    this.enableSave(false);
   }
 
-  requestTokens() {
-    this.connection.trigger('requestTokens');
-  }
-
-  requestEndpoints() {
-    this.connection.trigger('requestEndpoints');
-  }
-
-  activateSave(status: boolean): void {
+  enableSave(enabled: boolean): void {
+    console.log(enabled);
     const settings = {
       button: 'step1',
       text: 'done',
       visible: true,
-      enabled: status,
+      enabled: enabled,
     };
     this.connection.trigger('updateButton', settings);
+  }
+
+  updateActivityData(data: IActivityData) {
+    const updatedPayload = { ...this.payload$.value };
+
+    this.payload$.next({
+      ...updatedPayload,
+      ...{
+        metaData: { isConfigured: true },
+        arguments: {
+          execute: { inArguments: { message: data.message, id: data.id } },
+        },
+      },
+    });
+
+    // Update payload
+    console.log(this.payload$.value);
+  }
+
+  saveData(): void {
+    console.log(this.payload$.value);
   }
 }

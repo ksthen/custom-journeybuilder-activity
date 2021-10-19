@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { ApiTest } from '@custom-journeybuilder-activity/data';
 import { PostMongerService } from './postmonger.service';
+import { IActivityData } from './models';
 
 @Component({
   selector: 'custom-journeybuilder-activity-root',
@@ -11,24 +12,17 @@ import { PostMongerService } from './postmonger.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private http: HttpClient, private pm: PostMongerService) {}
+  private saveClickedSubscription = new Subscription();
 
-  public apiTest$!: Observable<ApiTest>;
-  public currentStep = 'step1';
+  constructor(private pm: PostMongerService) {}
 
-  ngOnInit() {
-    this.apiTest$ = this.http
-      .get('./api')
-      .pipe(map((response) => response as ApiTest));
+  ngOnInit() {}
 
-    this.pm.ready();
-    this.pm.requestTokens();
-    this.pm.requestEndpoints();
+  enableSave(enabled: boolean) {
+    this.pm.enableSave(enabled);
   }
 
-  formValid(valid: boolean) {
-    this.pm.activateSave(valid);
+  updatActivityData(data: IActivityData) {
+    this.pm.updateActivityData(data);
   }
-
-  enableSave(status: boolean) {}
 }

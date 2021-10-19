@@ -29,10 +29,9 @@
   </div>
   <div class="slds-card__body slds-card__body_inner">
     <custom-journeybuilder-activity-form
-      (formValid)="formValid($event)"
+      (formValid)="enableSave($event)"
+      (activityData)="updatActivityData($event)"
     ></custom-journeybuilder-activity-form>
   </div>
   <footer class="slds-card__footer"></footer>
 </article>
-
-{{ apiTest$ | async | json }}
