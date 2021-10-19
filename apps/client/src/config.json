@@ -1,7 +1,8 @@
 {
   "workflowApiVersion": "1.1",
   "metaData": {
-    "icon": "assets/icon.jpg"
+    "icon": "assets/icon.jpg",
+    "category": "message"
   },
   "type": "REST",
   "lang": {
@@ -43,5 +44,5 @@
       "size": "scm-sm"
     }
   },
-  "wizardSteps": [{ "label": "Step 1", "key": "step1", "active": false }]
+  "wizardSteps": [{ "label": "Step 1", "key": "step1", "active": true }]
 }

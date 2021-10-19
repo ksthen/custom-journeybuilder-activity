@@ -39,6 +39,14 @@ export class PostMongerService {
     this.connection.on('clickNext', () => {
       console.log('Next step clicked');
     });
+
+    this.connection.on('clickedBack', () => {
+      console.log('Click back');
+    });
+
+    this.connection.on('gotoStep', (step: any) => {
+      console.log('Goto', step);
+    });
   }
 
   ready() {
