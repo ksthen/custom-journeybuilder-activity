@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Postmonger from 'postmonger';
 import { BehaviorSubject, bindCallback, Observable } from 'rxjs';
-import {
-  IActivityData,
-  IEndPoints,
-  IInitPayload,
-  IPayload,
-  ITokens,
-} from './models';
+import { IActivityData, IEndPoints, IPayload, ITokens } from './models';
 
 @Injectable({
   providedIn: 'root',
