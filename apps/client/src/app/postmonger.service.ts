@@ -61,7 +61,7 @@ export class PostMongerService {
     this.connection.trigger('requestEndpoints');
   }
 
-  activateStep(status: boolean, step: string): void {
+  activateSave(status: boolean): void {
     const settings = {
       button: 'step1',
       text: 'done',

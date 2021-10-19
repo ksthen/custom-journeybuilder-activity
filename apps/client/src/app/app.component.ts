@@ -26,8 +26,8 @@ export class AppComponent implements OnInit {
     this.pm.requestEndpoints();
   }
 
-  toggleActive(valid: boolean) {
-    this.pm.activateStep(valid, this.currentStep);
+  formValid(valid: boolean) {
+    this.pm.activateSave(valid);
   }
 
   enableSave(status: boolean) {}
