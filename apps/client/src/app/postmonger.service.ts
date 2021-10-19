@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as Postmonger from 'postmonger';
 import { BehaviorSubject, bindCallback, Observable } from 'rxjs';
-import { IActivityData, IEndPoints, IInitPayload, ITokens } from './models';
+import {
+  IActivityData,
+  IEndPoints,
+  IInitPayload,
+  IPayload,
+  ITokens,
+} from './models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,17 +15,16 @@ import { IActivityData, IEndPoints, IInitPayload, ITokens } from './models';
 
 // https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/using-postmonger.htm
 export class PostMongerService {
-  public payload$ = new BehaviorSubject({});
-
+  public payload$!: BehaviorSubject<IPayload>;
   private connection: any;
 
   constructor() {
     console.log('Server constructor');
     this.connection = new Postmonger.Session();
 
-    this.connection.on('initActivity', (payload: IInitPayload) => {
+    this.connection.on('initActivity', (payload: IPayload) => {
       console.log('Init activity', payload);
-      this.payload$.next(payload);
+      this.payload$ = new BehaviorSubject(payload);
     });
 
     this.connection.on('clickedNext', () => {
@@ -45,15 +50,13 @@ export class PostMongerService {
   updateActivityData(data: IActivityData) {
     const updatedPayload = { ...this.payload$.value };
 
-    this.payload$.next({
-      ...updatedPayload,
-      ...{
-        metaData: { isConfigured: true },
-        arguments: {
-          execute: { inArguments: { message: data.message, id: data.id } },
-        },
-      },
-    });
+    updatedPayload.metaData.isConfigured = true;
+    updatedPayload.arguments.execute.inArguments = {
+      id: data.id,
+      message: data.message,
+    };
+
+    this.payload$.next(updatedPayload);
 
     // Update payload
     console.log(this.payload$.value);

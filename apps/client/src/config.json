@@ -17,7 +17,15 @@
       "body": "",
       "header": "",
       "format": "json",
-      "timeout": 10000
+      "timeout": 10000,
+      "inArguments": [
+        {
+          "id": ""
+        },
+        {
+          "message": ""
+        }
+      ]
     }
   },
   "configurationArguments": {

@@ -10,7 +10,7 @@ export interface IActivityOutcome {
   next: string;
 }
 
-export interface IInitPayload {
+export interface IPayload {
   arguments: {
     execute: {
       body: string;
@@ -19,6 +19,10 @@ export interface IInitPayload {
       timeout: number;
       url: string;
       verb: string;
+      inArguments: {
+        id: string;
+        message: string;
+      };
     };
   };
   configurationArguments: {
@@ -44,12 +48,13 @@ export interface IInitPayload {
   errors: any;
   id: any;
   key: string;
-  metadata: {
+  metaData: {
     category: string;
     icon: string;
     iconSmall: string;
     original_iton: string;
     statsContactIcon: any;
+    isConfigured?: boolean;
   };
   name: string;
   outcomes: IActivityOutcome[];
