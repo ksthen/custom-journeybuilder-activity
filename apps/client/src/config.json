@@ -1,7 +1,7 @@
 {
   "workflowApiVersion": "1.1",
   "metaData": {
-    "icon": "assets/icon.png"
+    "icon": "assets/icon.jpg"
   },
   "type": "REST",
   "lang": {
@@ -22,19 +22,19 @@
   "configurationArguments": {
     "save": {
       "url": "https://$DOMAIN/api/save",
-      "verb": "POST",
+      "verb": "POST"
     },
     "publish": {
       "url": "https://$DOMAIN/api/publish",
-      "verb": "POST",
+      "verb": "POST"
     },
     "stop": {
       "url": "https://$DOMAIN/api/stop",
-      "verb": "POST",
+      "verb": "POST"
     },
     "validate": {
       "url": "https://$DOMAIN/api/validate",
-      "verb": "POST",
+      "verb": "POST"
     }
   },
   "userInterfaces": {

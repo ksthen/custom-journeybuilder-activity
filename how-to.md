@@ -223,3 +223,9 @@ yarn add postmonger
 since no types
 add file globals.d.ts
 declare module "postmonger"
+
+## Setup activity in SFMC
+
+APps install package
+Journey builder activity
+Add component
