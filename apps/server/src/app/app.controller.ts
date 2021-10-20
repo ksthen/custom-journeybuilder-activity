@@ -35,7 +35,7 @@ export class AppController {
     return { status: 'ok' };
   }
 
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('validate')
   @HttpCode(200)
   validateActivity(@Body() message: any) {
