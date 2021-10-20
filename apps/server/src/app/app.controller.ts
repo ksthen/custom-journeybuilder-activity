@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 
 import { AppService } from './app.service';
 
@@ -11,8 +11,9 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @Get('test')
-  getTest() {
-    return { message: 'Test' };
+  @Post('execute')
+  createMessage(@Body() message: any) {
+    console.log(message);
+    return 'ok';
   }
 }

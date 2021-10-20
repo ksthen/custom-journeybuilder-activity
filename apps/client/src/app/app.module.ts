@@ -5,9 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FormComponent } from './form/form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TestHarnessComponent } from './test-harness/test-harness.component';
+import { CardComponent } from './card/card.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent],
+  declarations: [AppComponent, FormComponent, TestHarnessComponent, CardComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],

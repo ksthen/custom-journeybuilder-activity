@@ -10,6 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IActivityData } from '../models';
+import { PostMongerService } from '../postmonger.service';
 
 @Component({
   selector: 'custom-journeybuilder-activity-form',
@@ -20,13 +21,9 @@ import { IActivityData } from '../models';
 export class FormComponent implements OnInit, OnDestroy {
   private fromSubscription!: Subscription;
 
-  @Input() data!: IActivityData;
-  @Output() formValid = new EventEmitter<boolean>();
-  @Output() activityData = new EventEmitter<IActivityData>();
-
   public form = new FormGroup({});
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private postMonger: PostMongerService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -36,10 +33,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this.fromSubscription = this.form.valueChanges.subscribe(
       (data: IActivityData) => {
-        this.formValid.emit(this.form.valid);
+        this.postMonger.enableSave(this.form.valid);
 
         if (this.form.valid) {
-          this.activityData.emit(data);
+          this.postMonger.updateActivityData(this.form.value);
         }
       }
     );
