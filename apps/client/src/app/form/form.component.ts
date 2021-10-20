@@ -8,39 +8,42 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { IActivityData, IPayload } from '../models';
-import { PostMongerService } from '../postmonger.service';
+import { Subject, Subscription } from 'rxjs';
+import { map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { JourneyBuilderCommunicationService } from '../jb.service';
 
 @Component({
-  selector: 'custom-journeybuilder-activity-form',
+  selector: 'jb-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent implements OnInit, OnDestroy {
-  private fromSubscription!: Subscription;
-  private inArgumentsSubscription!: Subscription;
+  private unsubscribe = new Subject();
 
   public form = new FormGroup({});
 
-  constructor(private fb: FormBuilder, public postMonger: PostMongerService) {}
+  constructor(
+    private fb: FormBuilder,
+    public jb: JourneyBuilderCommunicationService
+  ) {}
 
   ngOnInit(): void {
+    // Build the form
     this.form = this.fb.group({
       id: ['', Validators.required],
       message: ['', Validators.required],
-      email: ['', Validators.required],
+      volvoId: ['', Validators.required],
     });
 
-    // Set initial value
-    this.inArgumentsSubscription = this.postMonger.inArguments$
+    // Set value when model is updated
+    this.jb.inArguments$
       .pipe(
+        takeUntil(this.unsubscribe),
         tap((inArguments) => {
-          inArguments.forEach((arg) =>
+          inArguments.forEach((inArgument) =>
             this.form.patchValue(
-              { ...arg },
+              { ...inArgument },
               { onlySelf: true, emitEvent: false }
             )
           );
@@ -48,28 +51,31 @@ export class FormComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    // Subcribe to form changes and trigger postmonger to update data
-    this.fromSubscription = this.form.valueChanges.subscribe((data: any) => {
-      if (this.form.valid) {
-        const inArguments = [
-          {
-            id: data.id,
-          },
-          {
-            message: data.message,
-          },
-          {
-            email: data.email,
-          },
-        ];
-
-        this.postMonger.updateActivityData(inArguments);
-      }
-    });
+    // Subcribe to form changes and update model
+    this.form.valueChanges
+      .pipe(
+        takeUntil(this.unsubscribe),
+        map((value: any) => {
+          if (this.form.valid) {
+            this.jb.inArguments$.next([
+              {
+                id: value.id,
+              },
+              {
+                message: value.message,
+              },
+              {
+                volvoId: value.volvoId,
+              },
+            ]);
+          }
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
-    this.fromSubscription.unsubscribe();
-    this.inArgumentsSubscription.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

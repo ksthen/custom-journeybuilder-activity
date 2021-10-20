@@ -14,6 +14,10 @@ export interface KeyValue {
   [key: string]: string;
 }
 
+export interface IInArgument {
+  [key: string]: string;
+}
+
 export interface IPayload {
   arguments: {
     execute: {

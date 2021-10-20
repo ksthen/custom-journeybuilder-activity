@@ -223,18 +223,20 @@ exports.AppModule = AppModule;
 
 "use strict";
 
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const operators_1 = __webpack_require__(/*! rxjs/operators */ "rxjs/operators");
 let AppService = class AppService {
-    constructor(http) {
+    constructor(http, configService) {
         this.http = http;
+        this.configService = configService;
     }
     sendMessage(message) {
-        const url = 'https://enihua4do8m1mvo.m.pipedream.net';
+        const url = this.configService.get('REST_ENDPOINT');
         this.http
             .post(url, message)
             .pipe(operators_1.take(1), operators_1.map((response) => console.log(response.status, response.statusText)))
@@ -243,7 +245,7 @@ let AppService = class AppService {
 };
 AppService = tslib_1.__decorate([
     common_1.Injectable(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof common_1.HttpService !== "undefined" && common_1.HttpService) === "function" ? _a : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof common_1.HttpService !== "undefined" && common_1.HttpService) === "function" ? _a : Object, typeof (_b = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _b : Object])
 ], AppService);
 exports.AppService = AppService;
 

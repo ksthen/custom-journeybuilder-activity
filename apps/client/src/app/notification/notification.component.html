@@ -1,0 +1,37 @@
+<div
+  class="
+    slds-m-top_small
+    slds-scoped-notification slds-media slds-media_center
+    slds-scoped-notification_light
+  "
+  role="status"
+>
+  <div class="slds-media__figure">
+    <span
+      class="slds-icon_container slds-icon-utility-info"
+      title="information"
+    >
+      <svg
+        class="slds-icon slds-icon_small slds-icon-text-default"
+        aria-hidden="true"
+      >
+        <use
+          xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"
+        ></use>
+      </svg>
+      <span class="slds-assistive-text">information</span>
+    </span>
+  </div>
+  <div class="slds-media__body">
+    <p>
+      {{ text }}
+      <a
+        [href]="link"
+        targte="_blank"
+        rel="noopener noreferrer"
+        *ngIf="link && linkText"
+        >{{ linkText }}</a
+      >
+    </p>
+  </div>
+</div>

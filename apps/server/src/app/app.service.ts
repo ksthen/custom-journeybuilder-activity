@@ -1,12 +1,16 @@
 import { HttpService, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { take, map } from 'rxjs/operators';
 
 @Injectable()
 export class AppService {
-  constructor(private http: HttpService) {}
+  constructor(
+    private http: HttpService,
+    private configService: ConfigService
+  ) {}
 
   sendMessage(message: any): void {
-    const url = 'https://enihua4do8m1mvo.m.pipedream.net';
+    const url = this.configService.get('REST_ENDPOINT');
     this.http
       .post(url, message)
       .pipe(

@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "custom-journeybuilder-activity",
+            "prefix": "jb",
             "style": "kebab-case"
           }
         ]

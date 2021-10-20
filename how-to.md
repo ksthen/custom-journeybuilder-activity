@@ -1,4 +1,7 @@
 https://github.com/salesforce-marketingcloud/sfmc-example-jb-custom-activity/blob/master/modules/discount-code/src/index.js
+https://marketingautomation.isobar.ch/2020/12/07/journey-builder-custom-activity-deep-dive/
+https://github.com/sfm-cz/journeybuilder-custom-activity/blob/master/routes/activity.js
+https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/using-postmonger.htm
 
 # Setup
 

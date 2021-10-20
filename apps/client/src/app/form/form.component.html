@@ -1,20 +1,20 @@
 <form [formGroup]="form">
   <div class="slds-form">
     <div
-      class="slds-form-element"
+      class="slds-form-element slds-m-top_small"
       [ngClass]="{
         'slds-has-error': !form.get('id')?.valid && form.get('id')?.touched
       }"
     >
-      <label class="slds-form-element__label" for="text-input-id-47">
-        <abbr class="slds-required" title="required">* </abbr>Campaign ID</label
+      <label class="slds-form-element__label">
+        <abbr class="slds-required" title="required">* </abbr>
+        Campaign ID</label
       >
       <div class="slds-form-element__control">
         <input
           required=""
           formControlName="id"
           type="text"
-          id="text-input-id-47"
           placeholder="Add campaign ID…"
           required=""
           class="slds-input"
@@ -24,24 +24,28 @@
         class="slds-form-element__help"
         *ngIf="!form.get('id')?.valid && form.get('id')?.touched"
       >
-        Enter Campaign ID.
+        ID is required.
       </div>
+      <jb-notification
+        text="Enter ID of the Leanplum campaign you would like to target."
+        linkText="Open leanplum"
+        link="https://www.leanplum.com/"
+      ></jb-notification>
     </div>
 
     <div
-      class="slds-form-element slds-p-top_large"
+      class="slds-form-element slds-m-top_small"
       [ngClass]="{
         'slds-has-error': !form.get('message')?.valid && form.get('id')?.touched
       }"
     >
-      <label class="slds-form-element__label" for="text-input-id-47">
-        <abbr class="slds-required" title="required">* </abbr>Campaign
+      <label class="slds-form-element__label">
+        <abbr class="slds-required" title="required">* </abbr>
         Message</label
       >
       <div class="slds-form-element__control">
         <textarea
           formControlName="message"
-          id="textarea-id-01"
           placeholder="Add campaign message…"
           class="slds-textarea"
         ></textarea>
@@ -50,8 +54,46 @@
         class="slds-form-element__help"
         *ngIf="!form.get('message')?.valid && form.get('message')?.touched"
       >
-        Enter message.
+        Message is required.
       </div>
+      <jb-notification
+        text="Enter the message you would like to send to your users. Do not include any PII data since Leanplum is not equiped to handle it."
+      ></jb-notification>
+    </div>
+
+    <div
+      class="slds-form-element slds-m-top_small"
+      [ngClass]="{
+        'slds-has-error': !form.get('id')?.valid && form.get('id')?.touched
+      }"
+    >
+      <label class="slds-form-element__label">
+        <abbr class="slds-required" title="required">* </abbr>
+        Volvo ID Binding</label
+      >
+      <div class="slds-form-element__control">
+        <input
+          required=""
+          formControlName="volvoId"
+          type="text"
+          placeholder="Add Volvo ID…"
+          required=""
+          class="slds-input"
+        />
+      </div>
+      <div
+        class="slds-form-element__help"
+        *ngIf="!form.get('volvoId')?.valid && form.get('volvoId')?.touched"
+      >
+        Data binding for Volvo ID is required.
+      </div>
+      <jb-notification
+        [text]="
+          'Add Data Binding for the Volvo ID: {{Contact.Attribute.JOURNEY_DE.ATTRIBUTE}} where JOURNEY_DE is the name of the entry data extension of the joureny and ATTRIBUTE is the attribute where the Volvo Id is stored. '
+        "
+        linkText="Read more."
+        link="https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/how-data-binding-works.html"
+      ></jb-notification>
     </div>
   </div>
 </form>

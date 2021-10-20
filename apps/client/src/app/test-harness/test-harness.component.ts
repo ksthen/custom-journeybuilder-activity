@@ -4,7 +4,7 @@ import * as Postmonger from 'postmonger';
 import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'custom-journeybuilder-activity-test-harness',
+  selector: 'jb-test-harness',
   templateUrl: './test-harness.component.html',
   styleUrls: ['./test-harness.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,10 +62,13 @@ export class TestHarnessComponent implements OnInit {
             timeout: 10000,
             inArguments: [
               {
-                id: 'test',
+                id: 'id',
               },
               {
-                message: 'test',
+                message: 'message',
+              },
+              {
+                volvoId: '{{test}}',
               },
             ],
           },

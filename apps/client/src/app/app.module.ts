@@ -7,9 +7,16 @@ import { FormComponent } from './form/form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestHarnessComponent } from './test-harness/test-harness.component';
 import { CardComponent } from './card/card.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, TestHarnessComponent, CardComponent],
+  declarations: [
+    AppComponent,
+    FormComponent,
+    TestHarnessComponent,
+    CardComponent,
+    NotificationComponent,
+  ],
   imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
