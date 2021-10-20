@@ -1,3 +1,5 @@
+https://github.com/salesforce-marketingcloud/sfmc-example-jb-custom-activity/blob/master/modules/discount-code/src/index.js
+
 # Setup
 
 ## Create workspace

@@ -9,7 +9,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { IActivityData } from '../models';
+import { map, tap } from 'rxjs/operators';
+import { IActivityData, IPayload } from '../models';
 import { PostMongerService } from '../postmonger.service';
 
 @Component({
@@ -20,10 +21,11 @@ import { PostMongerService } from '../postmonger.service';
 })
 export class FormComponent implements OnInit, OnDestroy {
   private fromSubscription!: Subscription;
+  private inArgumentsSubscription!: Subscription;
 
   public form = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private postMonger: PostMongerService) {}
+  constructor(private fb: FormBuilder, public postMonger: PostMongerService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -31,12 +33,33 @@ export class FormComponent implements OnInit, OnDestroy {
       message: ['', Validators.required],
     });
 
+    // Set initial value
+    this.inArgumentsSubscription = this.postMonger.inArguments$
+      .pipe(
+        tap((inArguments) => {
+          inArguments.forEach((arg) =>
+            this.form.patchValue(arg, { onlySelf: true, emitEvent: false })
+          );
+        })
+      )
+      .subscribe();
+
+    // Subcribe to form changes and trigger postmonger to update data
     this.fromSubscription = this.form.valueChanges.subscribe(
       (data: IActivityData) => {
         this.postMonger.enableSave(this.form.valid);
 
         if (this.form.valid) {
-          this.postMonger.updateActivityData(this.form.value);
+          const inArguments = [
+            {
+              id: data.id,
+            },
+            {
+              message: data.message,
+            },
+          ];
+
+          this.postMonger.updateActivityData(inArguments);
         }
       }
     );
@@ -44,5 +67,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.fromSubscription.unsubscribe();
+    this.inArgumentsSubscription.unsubscribe();
   }
 }

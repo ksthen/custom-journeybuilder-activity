@@ -49,27 +49,63 @@ export class TestHarnessComponent implements OnInit {
     jb.ready = () => {
       jbSession.trigger('initActivity', {
         name: '',
-        key: 'EXAMPLE-1',
-        metaData: {},
-        configurationArguments: {},
+        id: null,
+        key: 'REST-1',
+        type: 'REST',
         arguments: {
-          executionMode: '{{Context.ExecutionMode}}',
-          definitionId: '{{Context.DefinitionId}}',
-          activityId: '{{Activity.Id}}',
-          contactKey: '{{Context.ContactKey}}',
           execute: {
+            url: 'https://$DOMAIN/api/execute',
+            verb: 'POST',
+            body: '',
+            header: '',
+            format: 'json',
+            timeout: 10000,
             inArguments: [
               {
-                id: '',
-                message: '',
+                id: 'test',
+              },
+              {
+                message: 'test',
               },
             ],
-            outArguments: [],
           },
-          startActivityKey: '{{Context.StartActivityKey}}',
-          definitionInstanceId: '{{Context.DefinitionInstanceId}}',
-          requestObjectId: '{{Context.RequestObjectId}}',
         },
+        configurationArguments: {
+          save: {
+            url: 'https://$DOMAIN/api/save',
+            verb: 'POST',
+          },
+          publish: {
+            url: 'https://$DOMAIN/api/publish',
+            verb: 'POST',
+          },
+          stop: {
+            url: 'https://$DOMAIN/api/stop',
+            verb: 'POST',
+          },
+          validate: {
+            url: 'https://$DOMAIN/api/validate',
+            verb: 'POST',
+          },
+          applicationExtensionKey: '58bc418d-901d-46a6-8262-6e49d3e08211',
+        },
+        metaData: {
+          icon: 'https://custom-journeybuilder-activity.herokuapp.com/assets/icon.jpg',
+          category: 'message',
+          iconSmall: null,
+          statsContactIcon: null,
+          original_icon: 'assets/icon.jpg',
+        },
+        editable: true,
+        outcomes: [
+          {
+            next: 'WAITBYDURATION-2',
+            metaData: {
+              invalid: false,
+            },
+          },
+        ],
+        errors: null,
       });
     };
   }

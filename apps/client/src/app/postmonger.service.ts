@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as Postmonger from 'postmonger';
-import { BehaviorSubject} from 'rxjs';
-import { IActivityData, IEndPoints, IPayload } from './models';
+import { BehaviorSubject, combineLatest, ReplaySubject } from 'rxjs';
+import { map, take, tap } from 'rxjs/operators';
+import { IActivityData, IEndPoints, IPayload, KeyValue } from './models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,20 +10,19 @@ import { IActivityData, IEndPoints, IPayload } from './models';
 
 // https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/using-postmonger.htm
 export class PostMongerService {
-  public payload$!: BehaviorSubject<IPayload>;
-  private connection: any;
+  private connection = new Postmonger.Session();
+  public payload$ = new ReplaySubject<IPayload>();
+  public inArguments$ = new ReplaySubject<any[]>();
 
   constructor() {
-    console.log('Server constructor');
-    this.connection = new Postmonger.Session();
-
     this.connection.on('initActivity', (payload: IPayload) => {
-      console.log('Init activity', payload);
-      this.payload$ = new BehaviorSubject(payload);
+      console.log('POSTMONGER: Init activity', payload);
+      this.payload$.next(payload);
+      this.inArguments$.next(payload.arguments.execute.inArguments);
     });
 
     this.connection.on('clickedNext', () => {
-      console.log('Next step clicked');
+      console.log('POSTMONGER: Next step clicked');
       this.saveData();
     });
 
@@ -31,32 +31,32 @@ export class PostMongerService {
   }
 
   enableSave(enabled: boolean): void {
-    console.log(enabled);
+    console.log('Enable save:', enabled);
     const settings = {
       button: 'step1',
       text: 'done',
       visible: true,
       enabled: enabled,
     };
+
     this.connection.trigger('updateButton', settings);
   }
 
-  updateActivityData(data: IActivityData) {
-    const updatedPayload = { ...this.payload$.value };
-
-    updatedPayload.metaData.isConfigured = true;
-    updatedPayload.arguments.execute.inArguments = {
-      id: data.id,
-      message: data.message,
-    };
-
-    this.payload$.next(updatedPayload);
-
-    // Update payload
-    console.log(this.payload$.value);
+  updateActivityData(inArguments: any[]) {
+    this.inArguments$.next([...inArguments]);
   }
 
   saveData(): void {
-    console.log(this.payload$.value);
+    combineLatest([this.payload$, this.inArguments$])
+      .pipe(
+        take(1),
+        map(([payload, inArguments]) => {
+          payload.metaData.isConfigured = true;
+          payload.arguments.execute.inArguments = inArguments;
+
+          this.connection.trigger('updateActivity', payload);
+        })
+      )
+      .subscribe();
   }
 }

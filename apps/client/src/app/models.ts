@@ -10,6 +10,10 @@ export interface IActivityOutcome {
   next: string;
 }
 
+export interface KeyValue {
+  [key: string]: string;
+}
+
 export interface IPayload {
   arguments: {
     execute: {
@@ -19,10 +23,7 @@ export interface IPayload {
       timeout: number;
       url: string;
       verb: string;
-      inArguments: {
-        id: string;
-        message: string;
-      };
+      inArguments: KeyValue[];
     };
   };
   configurationArguments: {
