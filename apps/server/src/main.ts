@@ -12,11 +12,13 @@ import * as helmet from 'helmet';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  /*
   app.use(
     helmet({
       contentSecurityPolicy: {
         directives: {
           'default-src': ["'self'"],
+          'style-src': ["'self'", "'unsafe-inline'"],
           'frame-ancestors': [
             "'self'",
             `https://mc.${process.env.STACK}.exacttarget.com`,
@@ -26,6 +28,7 @@ async function bootstrap() {
       },
     })
   );
+  */
 
   app.enableCors({
     origin: [

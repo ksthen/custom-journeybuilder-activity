@@ -326,22 +326,26 @@ const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const core_1 = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
 const app_module_1 = __webpack_require__(/*! ./app/app.module */ "./apps/server/src/app/app.module.ts");
-const helmet = __webpack_require__(/*! helmet */ "helmet");
 function bootstrap() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
-        app.use(helmet({
+        /*
+        app.use(
+          helmet({
             contentSecurityPolicy: {
-                directives: {
-                    'default-src': ["'self'"],
-                    'frame-ancestors': [
-                        "'self'",
-                        `https://mc.${process.env.STACK}.exacttarget.com`,
-                        `https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
-                    ],
-                },
+              directives: {
+                'default-src': ["'self'"],
+                'style-src': ["'self'", "'unsafe-inline'"],
+                'frame-ancestors': [
+                  "'self'",
+                  `https://mc.${process.env.STACK}.exacttarget.com`,
+                  `https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
+                ],
+              },
             },
-        }));
+          })
+        );
+        */
         app.enableCors({
             origin: [
                 'http://localhost:3333',
@@ -439,17 +443,6 @@ module.exports = require("@nestjs/passport");
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/serve-static");
-
-/***/ }),
-
-/***/ "helmet":
-/*!*************************!*\
-  !*** external "helmet" ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("helmet");
 
 /***/ }),
 
