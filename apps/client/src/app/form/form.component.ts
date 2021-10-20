@@ -65,6 +65,10 @@ export class FormComponent implements OnInit, OnDestroy {
     );
   }
 
+  triggerSave() {
+    this.postMonger.saveData();
+  }
+
   ngOnDestroy(): void {
     this.fromSubscription.unsubscribe();
     this.inArgumentsSubscription.unsubscribe();

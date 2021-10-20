@@ -12,7 +12,7 @@
   },
   "arguments": {
     "execute": {
-      "url": "https://$DOMAIN/api/execute",
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/execute",
       "verb": "POST",
       "body": "",
       "header": "",
@@ -30,19 +30,19 @@
   },
   "configurationArguments": {
     "save": {
-      "url": "https://$DOMAIN/api/save",
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/save",
       "verb": "POST"
     },
     "publish": {
-      "url": "https://$DOMAIN/api/publish",
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/publish",
       "verb": "POST"
     },
     "stop": {
-      "url": "https://$DOMAIN/api/stop",
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/stop",
       "verb": "POST"
     },
     "validate": {
-      "url": "https://$DOMAIN/api/validate",
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/validate",
       "verb": "POST"
     }
   },
