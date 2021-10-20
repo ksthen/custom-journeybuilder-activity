@@ -45,7 +45,7 @@
       "verb": "POST"
     },
     "validate": {
-      "url": "https://custom-journeybuilder-activity.herokuapp.com/validate",
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/validate",
       "verb": "POST"
     }
   },
