@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Postmonger from 'postmonger';
 import { BehaviorSubject, combineLatest, ReplaySubject } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
+import { last, map, take, tap } from 'rxjs/operators';
 import { IActivityData, IEndPoints, IPayload, KeyValue } from './models';
 
 @Injectable({
@@ -11,8 +11,8 @@ import { IActivityData, IEndPoints, IPayload, KeyValue } from './models';
 // https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-app-development.meta/mc-app-development/using-postmonger.htm
 export class PostMongerService {
   private connection = new Postmonger.Session();
-  public payload$ = new ReplaySubject<IPayload>();
-  public inArguments$ = new ReplaySubject<any[]>();
+  public payload$ = new ReplaySubject<IPayload>(1);
+  public inArguments$ = new ReplaySubject<any[]>(1);
 
   constructor() {
     this.connection.on('initActivity', (payload: IPayload) => {
@@ -28,6 +28,8 @@ export class PostMongerService {
 
     this.connection.trigger('ready');
     this.enableSave(false);
+
+    this.inArguments$.subscribe((data) => console.log('Latest value', data));
   }
 
   enableSave(enabled: boolean): void {
@@ -46,20 +48,6 @@ export class PostMongerService {
     this.inArguments$.next([...inArguments]);
   }
 
-  checkData(): void {
-    combineLatest([this.payload$, this.inArguments$])
-      .pipe(
-        take(1),
-        map(([payload, inArguments]) => {
-          payload.metaData.isConfigured = true;
-          payload.arguments.execute.inArguments = inArguments;
-
-          console.log('Saving:', payload);
-        })
-      )
-      .subscribe();
-  }
-
   saveData(): void {
     combineLatest([this.payload$, this.inArguments$])
       .pipe(
@@ -69,7 +57,6 @@ export class PostMongerService {
           payload.arguments.execute.inArguments = inArguments;
 
           console.log('Saving:', payload);
-
           this.connection.trigger('updateActivity', payload);
         })
       )

@@ -38,7 +38,10 @@ export class FormComponent implements OnInit, OnDestroy {
       .pipe(
         tap((inArguments) => {
           inArguments.forEach((arg) =>
-            this.form.patchValue(arg, { onlySelf: true, emitEvent: false })
+            this.form.patchValue(
+              { ...arg },
+              { onlySelf: true, emitEvent: false }
+            )
           );
         })
       )
