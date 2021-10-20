@@ -46,6 +46,20 @@ export class PostMongerService {
     this.inArguments$.next([...inArguments]);
   }
 
+  checkData(): void {
+    combineLatest([this.payload$, this.inArguments$])
+      .pipe(
+        take(1),
+        map(([payload, inArguments]) => {
+          payload.metaData.isConfigured = true;
+          payload.arguments.execute.inArguments = inArguments;
+
+          console.log('Saving:', payload);
+        })
+      )
+      .subscribe();
+  }
+
   saveData(): void {
     combineLatest([this.payload$, this.inArguments$])
       .pipe(
