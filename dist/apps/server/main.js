@@ -105,9 +105,6 @@ let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
-    getData() {
-        return this.appService.getData();
-    }
     publishActivity(message) {
         console.log(`Publish: ${JSON.stringify(message)}`);
         return { status: 'ok' };
@@ -126,15 +123,10 @@ let AppController = class AppController {
     }
     executeActivity(message) {
         console.log(`Exectue: ${JSON.stringify(message)}`);
+        this.appService.sendMessage(message);
         return { status: 'ok' };
     }
 };
-tslib_1.__decorate([
-    common_1.Get(),
-    tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", []),
-    tslib_1.__metadata("design:returntype", void 0)
-], AppController.prototype, "getData", null);
 tslib_1.__decorate([
     common_1.Post('publish'),
     common_1.HttpCode(200),
@@ -211,6 +203,7 @@ AppModule = tslib_1.__decorate([
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: path_1.join(__dirname, '..', 'client'),
             }),
+            common_1.HttpModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
@@ -235,18 +228,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
+const operators_1 = __webpack_require__(/*! rxjs/operators */ "rxjs/operators");
 let AppService = class AppService {
-    constructor(configService) {
-        this.configService = configService;
+    constructor(http) {
+        this.http = http;
     }
-    getData() {
-        return { message: `Welcome to server! ${this.configService.get('JWT')}` };
+    sendMessage(message) {
+        const url = 'https://enihua4do8m1mvo.m.pipedream.net';
+        this.http
+            .post(url, message)
+            .pipe(operators_1.take(1), operators_1.map((response) => console.log(response.status, response.statusText)))
+            .subscribe();
     }
 };
 AppService = tslib_1.__decorate([
     common_1.Injectable(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _a : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof common_1.HttpService !== "undefined" && common_1.HttpService) === "function" ? _a : Object])
 ], AppService);
 exports.AppService = AppService;
 
@@ -376,6 +373,17 @@ module.exports = require("@nestjs/serve-static");
 /***/ (function(module, exports) {
 
 module.exports = require("path");
+
+/***/ }),
+
+/***/ "rxjs/operators":
+/*!*********************************!*\
+  !*** external "rxjs/operators" ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("rxjs/operators");
 
 /***/ }),
 

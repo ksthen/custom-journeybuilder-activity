@@ -6,11 +6,6 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getData() {
-    return this.appService.getData();
-  }
-
   @Post('publish')
   @HttpCode(200)
   publishActivity(@Body() message: any) {
@@ -43,6 +38,7 @@ export class AppController {
   @HttpCode(200)
   executeActivity(@Body() message: any) {
     console.log(`Exectue: ${JSON.stringify(message)}`);
+    this.appService.sendMessage(message);
     return { status: 'ok' };
   }
 }
