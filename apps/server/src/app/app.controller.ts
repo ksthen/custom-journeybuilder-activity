@@ -1,6 +1,14 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 import { AppService } from './app.service';
+import { JwtAuthGuard } from './jwt.auth.guard';
 
 @Controller()
 export class AppController {
@@ -27,6 +35,7 @@ export class AppController {
     return { status: 'ok' };
   }
 
+  //@UseGuards(JwtAuthGuard)
   @Post('validate')
   @HttpCode(200)
   validateActivity(@Body() message: any) {
