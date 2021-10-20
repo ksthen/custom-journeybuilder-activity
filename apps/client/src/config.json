@@ -27,9 +27,6 @@
         },
         {
           "email": "{{InteractionDefaults.Email}}"
-        },
-        {
-          "volvoId": "{{InteractionDefaults.Volvoid}}"
         }
       ]
     }

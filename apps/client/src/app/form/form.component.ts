@@ -32,7 +32,6 @@ export class FormComponent implements OnInit, OnDestroy {
       id: ['', Validators.required],
       message: ['', Validators.required],
       email: ['', Validators.required],
-      volvoId: ['', Validators.required],
     });
 
     // Set initial value
@@ -61,9 +60,6 @@ export class FormComponent implements OnInit, OnDestroy {
           },
           {
             email: data.email,
-          },
-          {
-            volvoId: data.volvoId,
           },
         ];
 
