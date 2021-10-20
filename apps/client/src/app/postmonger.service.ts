@@ -54,6 +54,8 @@ export class PostMongerService {
           payload.metaData.isConfigured = true;
           payload.arguments.execute.inArguments = inArguments;
 
+          console.log('Saving:', payload);
+
           this.connection.trigger('updateActivity', payload);
         })
       )
