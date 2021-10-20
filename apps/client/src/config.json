@@ -46,7 +46,8 @@
     },
     "validate": {
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/validate",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     }
   },
   "userInterfaces": {
