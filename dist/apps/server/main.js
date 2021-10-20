@@ -330,23 +330,18 @@ const helmet = __webpack_require__(/*! helmet */ "helmet");
 function bootstrap() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
-        app.use(helmet());
-        /*
-        app.use(
-          helmet({
+        app.use(helmet({
             contentSecurityPolicy: {
-              directives: {
-                'default-src': ["'self'"],
-                'frame-ancestors': [
-                  "'self'",
-                  `https://mc.${process.env.STACK}.exacttarget.com`,
-                  `https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
-                ],
-              },
+                directives: {
+                    'default-src': ["'self'"],
+                    'frame-ancestors': [
+                        "'self'",
+                        `https://mc.${process.env.STACK}.exacttarget.com`,
+                        `https://jbinteractions.${process.env.STACK}.marketingcloudapps.com`,
+                    ],
+                },
             },
-          })
-        );
-        */
+        }));
         app.enableCors({
             origin: [
                 'http://localhost:3333',
