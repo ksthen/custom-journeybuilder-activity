@@ -31,6 +31,8 @@ export class FormComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       id: ['', Validators.required],
       message: ['', Validators.required],
+      email: ['', Validators.required],
+      volvoId: ['', Validators.required],
     });
 
     // Set initial value
@@ -48,24 +50,26 @@ export class FormComponent implements OnInit, OnDestroy {
       .subscribe();
 
     // Subcribe to form changes and trigger postmonger to update data
-    this.fromSubscription = this.form.valueChanges.subscribe(
-      (data: IActivityData) => {
-        this.postMonger.enableSave(this.form.valid);
+    this.fromSubscription = this.form.valueChanges.subscribe((data: any) => {
+      if (this.form.valid) {
+        const inArguments = [
+          {
+            id: data.id,
+          },
+          {
+            message: data.message,
+          },
+          {
+            email: data.email,
+          },
+          {
+            volvoId: data.volvoId,
+          },
+        ];
 
-        if (this.form.valid) {
-          const inArguments = [
-            {
-              id: data.id,
-            },
-            {
-              message: data.message,
-            },
-          ];
-
-          this.postMonger.updateActivityData(inArguments);
-        }
+        this.postMonger.updateActivityData(inArguments);
       }
-    );
+    });
   }
 
   ngOnDestroy(): void {

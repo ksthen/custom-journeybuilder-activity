@@ -27,21 +27,6 @@ export class PostMongerService {
     });
 
     this.connection.trigger('ready');
-    this.enableSave(false);
-
-    this.inArguments$.subscribe((data) => console.log('Latest value', data));
-  }
-
-  enableSave(enabled: boolean): void {
-    console.log('Enable save:', enabled);
-    const settings = {
-      button: 'step1',
-      text: 'done',
-      visible: true,
-      enabled: enabled,
-    };
-
-    this.connection.trigger('updateButton', settings);
   }
 
   updateActivityData(inArguments: any[]) {
