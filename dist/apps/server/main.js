@@ -294,9 +294,9 @@ let JwtAuthGuard = JwtAuthGuard_1 = class JwtAuthGuard extends passport_1.AuthGu
         return super.canActivate(context);
     }
     handleRequest(err, user, info) {
-        this.logger.log(err);
-        this.logger.log(user);
-        this.logger.log(info);
+        this.logger.log('error' + err);
+        this.logger.log('user' + user);
+        this.logger.log('info' + info);
         if (err || !user) {
             throw err || new common_1.UnauthorizedException();
         }
@@ -341,8 +341,8 @@ let JwtStrategy = JwtStrategy_1 = class JwtStrategy extends passport_1.PassportS
     }
     validate(payload) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.logger.log(payload);
-            return { userId: payload.sub, username: payload.username };
+            this.logger.log('Validate' + JSON.stringify(payload));
+            return payload;
         });
     }
 };
