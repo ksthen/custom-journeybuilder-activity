@@ -95,16 +95,21 @@
 
 "use strict";
 
-var AppController_1, _a;
+var AppController_1, _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/server/src/app/app.service.ts");
 const common_2 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const jwt_1 = __webpack_require__(/*! @nestjs/jwt */ "@nestjs/jwt");
+const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
+const JWT = __webpack_require__(/*! jsonwebtoken */ "jsonwebtoken");
 let AppController = AppController_1 = class AppController {
-    constructor(appService) {
+    constructor(appService, jwtService, configService) {
         this.appService = appService;
+        this.jwtService = jwtService;
+        this.configService = configService;
         this.logger = new common_2.Logger(AppController_1.name);
     }
     publishActivity(headers, body) {
@@ -124,8 +129,13 @@ let AppController = AppController_1 = class AppController {
         this.logger.log(`Stop - Body: ${JSON.stringify(body)}`);
         return { status: 'ok' };
     }
-    //@UseGuards(JwtAuthGuard)
     validateActivity(headers, body) {
+        this.logger.log(headers);
+        this.logger.log(body);
+        const result = JWT.verify(body.toString('utf8'), this.configService.get('JWT'), {
+            algorithms: ['HS256'],
+        });
+        this.logger.log(result);
         return { status: 'ok' };
     }
     executeActivity(headers, body) {
@@ -183,7 +193,7 @@ tslib_1.__decorate([
 ], AppController.prototype, "executeActivity", null);
 AppController = AppController_1 = tslib_1.__decorate([
     common_1.Controller(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object, typeof (_b = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _b : Object, typeof (_c = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _c : Object])
 ], AppController);
 exports.AppController = AppController;
 
@@ -461,6 +471,17 @@ module.exports = require("@nestjs/passport");
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/serve-static");
+
+/***/ }),
+
+/***/ "jsonwebtoken":
+/*!*******************************!*\
+  !*** external "jsonwebtoken" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("jsonwebtoken");
 
 /***/ }),
 

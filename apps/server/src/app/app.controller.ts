@@ -11,10 +11,18 @@ import {
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './jwt.auth.guard';
 import { Logger } from '@nestjs/common';
+import { JwtService, JwtVerifyOptions } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+
+import * as JWT from 'jsonwebtoken';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly jwtService: JwtService,
+    private configService: ConfigService
+  ) {}
 
   private readonly logger = new Logger(AppController.name);
 
@@ -44,10 +52,21 @@ export class AppController {
     return { status: 'ok' };
   }
 
-  //@UseGuards(JwtAuthGuard)
   @Post('validate')
   @HttpCode(200)
   validateActivity(@Headers() headers: any, @Body() body: any) {
+    this.logger.log(headers);
+    this.logger.log(body);
+
+    const result = JWT.verify(
+      body.toString('utf8'),
+      this.configService.get('JWT'),
+      {
+        algorithms: ['HS256'],
+      }
+    );
+
+    this.logger.log(result);
     return { status: 'ok' };
   }
 
