@@ -95,7 +95,7 @@
 
 "use strict";
 
-var _a, _b;
+var AppController_1, _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
@@ -103,32 +103,29 @@ const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/server/src/app/app.service.ts");
 const jwt_auth_guard_1 = __webpack_require__(/*! ./jwt.auth.guard */ "./apps/server/src/app/jwt.auth.guard.ts");
 const common_2 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-let AppController = class AppController {
-    constructor(appService, logger) {
+let AppController = AppController_1 = class AppController {
+    constructor(appService) {
         this.appService = appService;
-        this.logger = logger;
-        common_2.Logger.log('info');
-        common_2.Logger.warn('warning');
-        common_2.Logger.error('something went wrong! ', 'ERROR!!');
+        this.logger = new common_2.Logger(AppController_1.name);
     }
     publishActivity(message) {
-        console.log(`Publish: ${JSON.stringify(message)}`);
+        this.logger.log(`Publish: ${JSON.stringify(message)}`);
         return { status: 'ok' };
     }
     saveActivity(message) {
-        console.log(`Save: ${JSON.stringify(message)}`);
+        this.logger.log(`Save: ${JSON.stringify(message)}`);
         return { status: 'ok' };
     }
     stopActivity(message) {
-        console.log(`Stop: ${JSON.stringify(message)}`);
+        this.logger.log(`Stop: ${JSON.stringify(message)}`);
         return { status: 'ok' };
     }
     validateActivity(message) {
-        console.log(`Validate: ${JSON.stringify(message)}`);
+        this.logger.log(`Validate: ${JSON.stringify(message)}`);
         return { status: 'ok' };
     }
     executeActivity(message) {
-        console.log(`Exectue: ${JSON.stringify(message)}`);
+        this.logger.log(`Exectue: ${JSON.stringify(message)}`);
         this.appService.sendMessage(message);
         return { status: 'ok' };
     }
@@ -174,9 +171,9 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "executeActivity", null);
-AppController = tslib_1.__decorate([
+AppController = AppController_1 = tslib_1.__decorate([
     common_1.Controller(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object, typeof (_b = typeof common_2.Logger !== "undefined" && common_2.Logger) === "function" ? _b : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object])
 ], AppController);
 exports.AppController = AppController;
 

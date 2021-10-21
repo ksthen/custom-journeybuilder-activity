@@ -13,33 +13,28 @@ import { Logger } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private readonly logger: Logger
-  ) {
-    Logger.log('info');
-    Logger.warn('warning');
-    Logger.error('something went wrong! ', 'ERROR!!');
-  }
+  constructor(private readonly appService: AppService) {}
+
+  private readonly logger = new Logger(AppController.name);
 
   @Post('publish')
   @HttpCode(200)
   publishActivity(@Body() message: any) {
-    console.log(`Publish: ${JSON.stringify(message)}`);
+    this.logger.log(`Publish: ${JSON.stringify(message)}`);
     return { status: 'ok' };
   }
 
   @Post('save')
   @HttpCode(200)
   saveActivity(@Body() message: any) {
-    console.log(`Save: ${JSON.stringify(message)}`);
+    this.logger.log(`Save: ${JSON.stringify(message)}`);
     return { status: 'ok' };
   }
 
   @Post('stop')
   @HttpCode(200)
   stopActivity(@Body() message: any) {
-    console.log(`Stop: ${JSON.stringify(message)}`);
+    this.logger.log(`Stop: ${JSON.stringify(message)}`);
     return { status: 'ok' };
   }
 
@@ -47,14 +42,14 @@ export class AppController {
   @Post('validate')
   @HttpCode(200)
   validateActivity(@Body() message: any) {
-    console.log(`Validate: ${JSON.stringify(message)}`);
+    this.logger.log(`Validate: ${JSON.stringify(message)}`);
     return { status: 'ok' };
   }
 
   @Post('execute')
   @HttpCode(200)
   executeActivity(@Body() message: any) {
-    console.log(`Exectue: ${JSON.stringify(message)}`);
+    this.logger.log(`Exectue: ${JSON.stringify(message)}`);
     this.appService.sendMessage(message);
     return { status: 'ok' };
   }
