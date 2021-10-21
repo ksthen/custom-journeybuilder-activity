@@ -47,7 +47,8 @@
     "validate": {
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/validate",
       "verb": "POST",
-      "useJwt": true
+      "useJwt": true,
+      "customerKey": "your-encryption-customer-key-here"
     }
   },
   "userInterfaces": {
