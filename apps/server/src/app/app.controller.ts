@@ -48,13 +48,6 @@ export class AppController {
   @Post('validate')
   @HttpCode(200)
   validateActivity(@Headers() headers: any, @Body() body: any) {
-    this.logger.log(`Validate - Headers: ${JSON.stringify(headers)}`);
-    this.logger.log(
-      `Validate json stringify body - Body: ${JSON.stringify(body)}`
-    );
-    this.logger.log(body);
-    this.appService.sendMessage(body);
-
     return { status: 'ok' };
   }
 
