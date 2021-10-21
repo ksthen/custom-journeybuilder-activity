@@ -55,6 +55,7 @@ export class AppController {
     );
     this.logger.log(`Validate toString- Body: ${body.toString()}`);
     this.logger.log(body);
+    this.appService.sendMessage(body);
 
     return { status: 'ok' };
   }

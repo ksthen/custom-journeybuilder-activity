@@ -52,7 +52,7 @@
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/validate",
       "verb": "POST",
       "useJwt": true,
-      "body": "The Body"
+      "body": "{email-body}"
     }
   },
   "userInterfaces": {

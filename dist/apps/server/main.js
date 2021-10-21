@@ -132,6 +132,7 @@ let AppController = AppController_1 = class AppController {
             this.logger.log(`Validate json stringify body - Body: ${JSON.stringify(body)}`);
             this.logger.log(`Validate toString- Body: ${body.toString()}`);
             this.logger.log(body);
+            this.appService.sendMessage(body);
             return { status: 'ok' };
         });
     }
@@ -257,19 +258,21 @@ exports.AppModule = AppModule;
 
 "use strict";
 
-var _a, _b;
+var AppService_1, _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const operators_1 = __webpack_require__(/*! rxjs/operators */ "rxjs/operators");
-let AppService = class AppService {
+let AppService = AppService_1 = class AppService {
     constructor(http, configService) {
         this.http = http;
         this.configService = configService;
+        this.logger = new common_1.Logger(AppService_1.name);
     }
     sendMessage(message) {
+        this.logger.log(message);
         const url = this.configService.get('REST_ENDPOINT');
         this.http
             .post(url, message)
@@ -277,7 +280,7 @@ let AppService = class AppService {
             .subscribe();
     }
 };
-AppService = tslib_1.__decorate([
+AppService = AppService_1 = tslib_1.__decorate([
     common_1.Injectable(),
     tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof common_1.HttpService !== "undefined" && common_1.HttpService) === "function" ? _a : Object, typeof (_b = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _b : Object])
 ], AppService);
