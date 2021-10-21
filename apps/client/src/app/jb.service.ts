@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as Postmonger from 'postmonger';
 import { combineLatest, ReplaySubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
-import { IPayload } from './models';
+import { map, take, tap } from 'rxjs/operators';
+import { IInArgument, IPayload } from './models';
 
 @Injectable({
   providedIn: 'root',
@@ -32,14 +32,25 @@ export class JourneyBuilderCommunicationService {
     });
   }
 
+  updatePayload(inArguments: IInArgument[]) {
+    console.log(inArguments);
+    this.payload$
+      .pipe(
+        take(1),
+        tap((payload) => {
+          payload.arguments.execute.inArguments = inArguments;
+          this.payload$.next({ ...payload });
+        })
+      )
+      .subscribe();
+  }
+
   saveData(): void {
     combineLatest([this.payload$, this.inArguments$])
       .pipe(
         take(1),
         map(([payload, inArguments]) => {
           payload.metaData.isConfigured = true;
-          payload.arguments.execute.inArguments = inArguments;
-
           console.log('Saving:', payload);
           this.connection.trigger('updateActivity', payload);
         })

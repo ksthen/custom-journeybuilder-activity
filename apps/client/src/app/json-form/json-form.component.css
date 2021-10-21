@@ -1,0 +1,18 @@
+textarea {
+  background: url('/assets/jsonbg.png');
+  background-attachment: local;
+  background-repeat: no-repeat;
+  padding-left: 35px !important;
+  padding-top: 10px !important;
+  border-color: #ccc;
+  height: 500px;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.textarea-wrapper {
+  display: inline-block;
+  background-image: linear-gradient(#f1f1f1 50%, #f9f9f9 50%);
+  background-size: 100% 32px;
+  background-position: left 10px;
+}

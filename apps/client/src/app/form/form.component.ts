@@ -8,15 +8,16 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, Subscription } from 'rxjs';
-import { map, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { combineLatest, Subject, Subscription } from 'rxjs';
+import { map, take, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { JourneyBuilderCommunicationService } from '../jb.service';
+import { IInArgument, IPayload } from '../models';
 
 @Component({
   selector: 'jb-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject();
@@ -37,11 +38,12 @@ export class FormComponent implements OnInit, OnDestroy {
     });
 
     // Set value when model is updated
-    this.jb.inArguments$
+
+    this.jb.payload$
       .pipe(
         takeUntil(this.unsubscribe),
-        tap((inArguments) => {
-          inArguments.forEach((inArgument) =>
+        tap((payload) => {
+          payload.arguments.execute.inArguments.forEach((inArgument) =>
             this.form.patchValue(
               { ...inArgument },
               { onlySelf: true, emitEvent: false }
@@ -57,7 +59,7 @@ export class FormComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe),
         map((value: any) => {
           if (this.form.valid) {
-            this.jb.inArguments$.next([
+            const inArguments: IInArgument[] = [
               {
                 id: value.id,
               },
@@ -67,7 +69,8 @@ export class FormComponent implements OnInit, OnDestroy {
               {
                 volvoId: value.volvoId,
               },
-            ]);
+            ];
+            this.jb.updatePayload(inArguments);
           }
         })
       )

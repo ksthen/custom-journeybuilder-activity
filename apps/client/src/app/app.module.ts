@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestHarnessComponent } from './test-harness/test-harness.component';
 import { CardComponent } from './card/card.component';
 import { NotificationComponent } from './notification/notification.component';
+import { JsonFormComponent } from './json-form/json-form.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { NotificationComponent } from './notification/notification.component';
     TestHarnessComponent,
     CardComponent,
     NotificationComponent,
+    JsonFormComponent,
   ],
   imports: [BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule],
   providers: [],
