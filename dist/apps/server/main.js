@@ -126,10 +126,14 @@ let AppController = AppController_1 = class AppController {
     }
     //@UseGuards(JwtAuthGuard)
     validateActivity(headers, body) {
-        this.logger.log(`Validate - Headers: ${JSON.stringify(headers)}`);
-        this.logger.log(`Validate - Body: ${body}`);
-        this.logger.log(`Validate - Body: ${JSON.stringify(body)}`);
-        return { status: 'ok' };
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.logger.log(`Validate - Headers: ${JSON.stringify(headers)}`);
+            this.logger.log(`Validate body - Body: ${body}`);
+            this.logger.log(`Validate json stringify body - Body: ${JSON.stringify(body)}`);
+            this.logger.log(`Validate toString- Body: ${body.toString()}`);
+            this.logger.log(body);
+            return { status: 'ok' };
+        });
     }
     executeActivity(headers, body) {
         this.logger.log(`Execute - Headers: ${JSON.stringify(headers)}`);
@@ -172,7 +176,7 @@ tslib_1.__decorate([
     tslib_1.__param(1, common_1.Body()),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Object, Object]),
-    tslib_1.__metadata("design:returntype", void 0)
+    tslib_1.__metadata("design:returntype", Promise)
 ], AppController.prototype, "validateActivity", null);
 tslib_1.__decorate([
     common_1.Post('execute'),
