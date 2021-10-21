@@ -11,6 +11,7 @@ export class AppService {
 
   sendMessage(message: any): void {
     const url = this.configService.get('REST_ENDPOINT');
+
     this.http
       .post(url, message)
       .pipe(
