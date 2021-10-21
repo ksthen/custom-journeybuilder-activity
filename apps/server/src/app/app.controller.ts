@@ -9,10 +9,18 @@ import {
 
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './jwt.auth.guard';
+import { Logger } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly logger: Logger
+  ) {
+    Logger.log('info');
+    Logger.warn('warning');
+    Logger.error('something went wrong! ', 'ERROR!!');
+  }
 
   @Post('publish')
   @HttpCode(200)
