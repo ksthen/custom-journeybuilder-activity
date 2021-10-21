@@ -272,3 +272,10 @@ directives: {
 },
 })
 );
+
+## Debug heroku
+
+private readonly logger = new Logger(JwtStrategy.name);
+this.logger.log('Whatever');
+
+heroku logs --app custom-journeybuilder-activity

@@ -279,14 +279,31 @@ exports.AppService = AppService;
 
 "use strict";
 
+var JwtAuthGuard_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtAuthGuard = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const passport_1 = __webpack_require__(/*! @nestjs/passport */ "@nestjs/passport");
-let JwtAuthGuard = class JwtAuthGuard extends passport_1.AuthGuard('jwt') {
+let JwtAuthGuard = JwtAuthGuard_1 = class JwtAuthGuard extends passport_1.AuthGuard('jwt') {
+    constructor() {
+        super(...arguments);
+        this.logger = new common_1.Logger(JwtAuthGuard_1.name);
+    }
+    canActivate(context) {
+        return super.canActivate(context);
+    }
+    handleRequest(err, user, info) {
+        this.logger.log(err);
+        this.logger.log(user);
+        this.logger.log(info);
+        if (err || !user) {
+            throw err || new common_1.UnauthorizedException();
+        }
+        return user;
+    }
 };
-JwtAuthGuard = tslib_1.__decorate([
+JwtAuthGuard = JwtAuthGuard_1 = tslib_1.__decorate([
     common_1.Injectable()
 ], JwtAuthGuard);
 exports.JwtAuthGuard = JwtAuthGuard;
