@@ -47,13 +47,11 @@ export class AppController {
   //@UseGuards(JwtAuthGuard)
   @Post('validate')
   @HttpCode(200)
-  async validateActivity(@Headers() headers: any, @Body() body: any) {
+  validateActivity(@Headers() headers: any, @Body() body: any) {
     this.logger.log(`Validate - Headers: ${JSON.stringify(headers)}`);
-    this.logger.log(`Validate body - Body: ${body}`);
     this.logger.log(
       `Validate json stringify body - Body: ${JSON.stringify(body)}`
     );
-    this.logger.log(`Validate toString- Body: ${body.toString()}`);
     this.logger.log(body);
     this.appService.sendMessage(body);
 
@@ -65,6 +63,7 @@ export class AppController {
   executeActivity(@Headers() headers: any, @Body() body: any) {
     this.logger.log(`Execute - Headers: ${JSON.stringify(headers)}`);
     this.logger.log(`Execute - Body: ${JSON.stringify(body)}`);
+    this.logger.log(body);
     this.appService.sendMessage(body);
     return { status: 'ok' };
   }

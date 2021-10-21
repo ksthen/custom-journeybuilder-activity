@@ -14,7 +14,7 @@
     "execute": {
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/execute",
       "verb": "POST",
-      "body": "",
+      "body": "{body}",
       "header": "",
       "format": "json",
       "timeout": 10000,
@@ -26,7 +26,7 @@
           "message": ""
         },
         {
-          "volvoId": "{{Contact.Attribute.ENTRY_DE.ATTRIBUTE}}"
+          "volvoId": ""
         }
       ],
       "useJwt": true
