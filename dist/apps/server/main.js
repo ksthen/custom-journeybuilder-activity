@@ -101,7 +101,6 @@ exports.AppController = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/server/src/app/app.service.ts");
-const jwt_auth_guard_1 = __webpack_require__(/*! ./jwt.auth.guard */ "./apps/server/src/app/jwt.auth.guard.ts");
 const common_2 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 let AppController = AppController_1 = class AppController {
     constructor(appService) {
@@ -120,8 +119,9 @@ let AppController = AppController_1 = class AppController {
         this.logger.log(`Stop: ${JSON.stringify(message)}`);
         return { status: 'ok' };
     }
-    validateActivity(message) {
-        this.logger.log(`Validate: ${JSON.stringify(message)}`);
+    validateActivity(headers, body) {
+        this.logger.log(`Headers: ${JSON.stringify(headers)}`);
+        this.logger.log(`Body: ${JSON.stringify(body)}`);
         return { status: 'ok' };
     }
     executeActivity(message) {
@@ -155,12 +155,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "stopActivity", null);
 tslib_1.__decorate([
-    common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
     common_1.Post('validate'),
     common_1.HttpCode(200),
-    tslib_1.__param(0, common_1.Body()),
+    tslib_1.__param(0, common_1.Headers()),
+    tslib_1.__param(1, common_1.Body()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object]),
+    tslib_1.__metadata("design:paramtypes", [Object, Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "validateActivity", null);
 tslib_1.__decorate([
@@ -266,47 +266,6 @@ AppService = tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof common_1.HttpService !== "undefined" && common_1.HttpService) === "function" ? _a : Object, typeof (_b = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _b : Object])
 ], AppService);
 exports.AppService = AppService;
-
-
-/***/ }),
-
-/***/ "./apps/server/src/app/jwt.auth.guard.ts":
-/*!***********************************************!*\
-  !*** ./apps/server/src/app/jwt.auth.guard.ts ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var JwtAuthGuard_1;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.JwtAuthGuard = void 0;
-const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const passport_1 = __webpack_require__(/*! @nestjs/passport */ "@nestjs/passport");
-let JwtAuthGuard = JwtAuthGuard_1 = class JwtAuthGuard extends passport_1.AuthGuard('jwt') {
-    constructor() {
-        super(...arguments);
-        this.logger = new common_1.Logger(JwtAuthGuard_1.name);
-    }
-    canActivate(context) {
-        return super.canActivate(context);
-    }
-    handleRequest(err, user, info) {
-        this.logger.log('error' + err);
-        this.logger.log('user' + user);
-        this.logger.log('info' + info);
-        if (err || !user) {
-            throw err || new common_1.UnauthorizedException();
-        }
-        return user;
-    }
-};
-JwtAuthGuard = JwtAuthGuard_1 = tslib_1.__decorate([
-    common_1.Injectable()
-], JwtAuthGuard);
-exports.JwtAuthGuard = JwtAuthGuard;
 
 
 /***/ }),

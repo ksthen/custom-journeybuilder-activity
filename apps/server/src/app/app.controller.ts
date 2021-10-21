@@ -1,5 +1,6 @@
 import {
   Body,
+  Headers,
   Controller,
   Get,
   HttpCode,
@@ -38,11 +39,11 @@ export class AppController {
     return { status: 'ok' };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('validate')
   @HttpCode(200)
-  validateActivity(@Body() message: any) {
-    this.logger.log(`Validate: ${JSON.stringify(message)}`);
+  validateActivity(@Headers() headers: any, @Body() body: any) {
+    this.logger.log(`Headers: ${JSON.stringify(headers)}`);
+    this.logger.log(`Body: ${JSON.stringify(body)}`);
     return { status: 'ok' };
   }
 
