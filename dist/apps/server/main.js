@@ -303,7 +303,7 @@ exports.JwtAuthGuard = JwtAuthGuard;
 
 "use strict";
 
-var _a;
+var JwtStrategy_1, _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtStrategy = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
@@ -311,7 +311,7 @@ const passport_jwt_1 = __webpack_require__(/*! passport-jwt */ "passport-jwt");
 const passport_1 = __webpack_require__(/*! @nestjs/passport */ "@nestjs/passport");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
-let JwtStrategy = class JwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy) {
+let JwtStrategy = JwtStrategy_1 = class JwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy) {
     constructor(configService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -319,14 +319,17 @@ let JwtStrategy = class JwtStrategy extends passport_1.PassportStrategy(passport
             secretOrKey: configService.get('JWT'),
         });
         this.configService = configService;
+        this.logger = new common_1.Logger(JwtStrategy_1.name);
+        this.logger.log(configService.get('JWT'));
     }
     validate(payload) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.logger.log(payload);
             return { userId: payload.sub, username: payload.username };
         });
     }
 };
-JwtStrategy = tslib_1.__decorate([
+JwtStrategy = JwtStrategy_1 = tslib_1.__decorate([
     common_1.Injectable(),
     tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _a : Object])
 ], JwtStrategy);
