@@ -127,6 +127,7 @@ let AppController = AppController_1 = class AppController {
     //@UseGuards(JwtAuthGuard)
     validateActivity(headers, body) {
         this.logger.log(`Validate - Headers: ${JSON.stringify(headers)}`);
+        this.logger.log(`Validate - Body: ${body}`);
         this.logger.log(`Validate - Body: ${JSON.stringify(body)}`);
         return { status: 'ok' };
     }
