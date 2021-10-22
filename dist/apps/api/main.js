@@ -187,6 +187,8 @@ const axios_1 = __webpack_require__(/*! @nestjs/axios */ "@nestjs/axios");
 const app_controller_1 = __webpack_require__(/*! ./app.controller */ "./apps/api/src/app/app.controller.ts");
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/api/src/app/app.service.ts");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
+const serve_static_1 = __webpack_require__(/*! @nestjs/serve-static */ "@nestjs/serve-static");
+const path_1 = __webpack_require__(/*! path */ "path");
 let AppModule = class AppModule {
 };
 AppModule = tslib_1.__decorate([
@@ -194,8 +196,8 @@ AppModule = tslib_1.__decorate([
         imports: [
             axios_1.HttpModule,
             config_1.ConfigModule.forRoot({ envFilePath: '.env' }),
-            ServeStaticModule.forRoot({
-                rootPath: join(__dirname, '..', 'client'),
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: path_1.join(__dirname, '..', 'client'),
             }),
         ],
         controllers: [app_controller_1.AppController],
@@ -389,6 +391,17 @@ module.exports = require("@nestjs/core");
 
 /***/ }),
 
+/***/ "@nestjs/serve-static":
+/*!***************************************!*\
+  !*** external "@nestjs/serve-static" ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@nestjs/serve-static");
+
+/***/ }),
+
 /***/ "jsonwebtoken":
 /*!*******************************!*\
   !*** external "jsonwebtoken" ***!
@@ -397,6 +410,17 @@ module.exports = require("@nestjs/core");
 /***/ (function(module, exports) {
 
 module.exports = require("jsonwebtoken");
+
+/***/ }),
+
+/***/ "path":
+/*!***********************!*\
+  !*** external "path" ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
 
 /***/ }),
 
