@@ -1,20 +1,21 @@
-import { Handler } from "@netlify/functions";
+/**
+ * This is not a production server yet!
+ * This is only a minimal backend to get started.
+ */
 
-import express from 'express';
-import helmet from 'helmet';
+import { Logger } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 
-export const app: express.Application = express();
-app.use(helmet());
+import { AppModule } from './app/app.module';
 
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  const globalPrefix = 'api';
+  app.setGlobalPrefix(globalPrefix);
+  const port = process.env.PORT || 3333;
+  await app.listen(port, () => {
+    Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
+  });
+}
 
-const handler: Handler = async (event, context) => {
-  console.log('main running');
-  console.log(event, context);
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: "Hello World4" }),
-  };
-};
-
-export { handler };
-
+bootstrap();

@@ -20,7 +20,7 @@ import { IInArgument, IPayload } from '../models';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormComponent implements OnInit, OnDestroy {
-  private unsubscribe = new Subject();
+  private alive = true;
 
   public form = new FormGroup({});
 
@@ -41,7 +41,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     this.jb.payload$
       .pipe(
-        takeUntil(this.unsubscribe),
+        takeWhile(() => this.alive),
         tap((payload) => {
           payload.arguments.execute.inArguments.forEach((inArgument) =>
             this.form.patchValue(
@@ -56,7 +56,7 @@ export class FormComponent implements OnInit, OnDestroy {
     // Subcribe to form changes and update model
     this.form.valueChanges
       .pipe(
-        takeUntil(this.unsubscribe),
+        takeWhile(() => this.alive),
         map((value: any) => {
           if (this.form.valid) {
             const inArguments: IInArgument[] = [
@@ -78,7 +78,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.alive = false;
   }
 }
