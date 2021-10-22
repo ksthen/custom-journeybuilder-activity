@@ -20,13 +20,19 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
 
+    const header = request.headers;
+    this.logger.log(header);
+
+    const token = request.body.toString('utf8');
+    this.logger.log(token);
+
     return JWT.verify(
-      request.body.toString('utf8'),
+      token,
       this.configService.get('JWT'),
       (err: Error, decoded: any) => {
         if (err) {
           this.logger.log(err);
-          return true;
+          return false;
         }
         this.logger.log(decoded);
         return true;

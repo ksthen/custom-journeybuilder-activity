@@ -282,10 +282,14 @@ let AuthGuard = AuthGuard_1 = class AuthGuard {
     }
     canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        return JWT.verify(request.body.toString('utf8'), this.configService.get('JWT'), (err, decoded) => {
+        const header = request.headers;
+        this.logger.log(header);
+        const token = request.body.toString('utf8');
+        this.logger.log(token);
+        return JWT.verify(token, this.configService.get('JWT'), (err, decoded) => {
             if (err) {
                 this.logger.log(err);
-                return true;
+                return false;
             }
             this.logger.log(decoded);
             return true;
