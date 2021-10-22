@@ -319,9 +319,12 @@ const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const core_1 = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
 const app_module_1 = __webpack_require__(/*! ./app/app.module */ "./apps/api/src/app/app.module.ts");
+const bodyParser = __webpack_require__(/*! body-parser */ "body-parser");
 function bootstrap() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
+        // Use the raw body parser to verify encoded messages from SFMC
+        app.use(bodyParser.raw({ type: 'application/jwt' }));
         const globalPrefix = 'api';
         app.setGlobalPrefix(globalPrefix);
         const port = process.env.PORT || 3333;
@@ -399,6 +402,17 @@ module.exports = require("@nestjs/core");
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/serve-static");
+
+/***/ }),
+
+/***/ "body-parser":
+/*!******************************!*\
+  !*** external "body-parser" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("body-parser");
 
 /***/ }),
 
