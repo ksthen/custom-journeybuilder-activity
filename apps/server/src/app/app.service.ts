@@ -2,6 +2,8 @@ import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { take, map } from 'rxjs/operators';
 
+import * as JWT from 'jsonwebtoken';
+
 @Injectable()
 export class AppService {
   constructor(
@@ -23,5 +25,24 @@ export class AppService {
         map((response) => console.log(response.status, response.statusText))
       )
       .subscribe();
+  }
+
+  verifyRequest(body: any): boolean {
+    JWT.verify(
+      body.toString('utf8'),
+      this.configService.get('JWT'),
+      {
+        algorithms: ['HS256'],
+      },
+      (err, decoded) => {
+        if (err) {
+          this.logger.log(err);
+          return false;
+        } else {
+          this.logger.log(decoded);
+          return true;
+        }
+      }
+    );
   }
 }

@@ -228,11 +228,8 @@ const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const serve_static_1 = __webpack_require__(/*! @nestjs/serve-static */ "@nestjs/serve-static");
 const path_1 = __webpack_require__(/*! path */ "path");
-const jwt_1 = __webpack_require__(/*! @nestjs/jwt */ "@nestjs/jwt");
-const passport_1 = __webpack_require__(/*! @nestjs/passport */ "@nestjs/passport");
 const app_controller_1 = __webpack_require__(/*! ./app.controller */ "./apps/server/src/app/app.controller.ts");
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/server/src/app/app.service.ts");
-const jwt_strategy_1 = __webpack_require__(/*! ./jwt.strategy */ "./apps/server/src/app/jwt.strategy.ts");
 let AppModule = class AppModule {
 };
 AppModule = tslib_1.__decorate([
@@ -243,20 +240,9 @@ AppModule = tslib_1.__decorate([
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: path_1.join(__dirname, '..', 'client'),
             }),
-            // https://stackoverflow.com/questions/60884932/nestjs-jwt-strategy-requires-a-secret-or-key
-            passport_1.PassportModule,
-            jwt_1.JwtModule.registerAsync({
-                imports: [config_1.ConfigModule],
-                useFactory: (configService) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-                    return {
-                        secret: configService.get('JWT'),
-                    };
-                }),
-                inject: [config_1.ConfigService],
-            }),
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, jwt_strategy_1.JwtStrategy],
+        providers: [app_service_1.AppService],
     })
 ], AppModule);
 exports.AppModule = AppModule;
@@ -280,6 +266,7 @@ const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const operators_1 = __webpack_require__(/*! rxjs/operators */ "rxjs/operators");
+const JWT = __webpack_require__(/*! jsonwebtoken */ "jsonwebtoken");
 let AppService = AppService_1 = class AppService {
     constructor(http, configService) {
         this.http = http;
@@ -294,56 +281,26 @@ let AppService = AppService_1 = class AppService {
             .pipe(operators_1.take(1), operators_1.map((response) => console.log(response.status, response.statusText)))
             .subscribe();
     }
+    verifyRequest(body) {
+        JWT.verify(body.toString('utf8'), this.configService.get('JWT'), {
+            algorithms: ['HS256'],
+        }, (err, decoded) => {
+            if (err) {
+                this.logger.log(err);
+                return false;
+            }
+            else {
+                this.logger.log(decoded);
+                return true;
+            }
+        });
+    }
 };
 AppService = AppService_1 = tslib_1.__decorate([
     common_1.Injectable(),
     tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof common_1.HttpService !== "undefined" && common_1.HttpService) === "function" ? _a : Object, typeof (_b = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _b : Object])
 ], AppService);
 exports.AppService = AppService;
-
-
-/***/ }),
-
-/***/ "./apps/server/src/app/jwt.strategy.ts":
-/*!*********************************************!*\
-  !*** ./apps/server/src/app/jwt.strategy.ts ***!
-  \*********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var JwtStrategy_1, _a;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.JwtStrategy = void 0;
-const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
-const passport_jwt_1 = __webpack_require__(/*! passport-jwt */ "passport-jwt");
-const passport_1 = __webpack_require__(/*! @nestjs/passport */ "@nestjs/passport");
-const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
-let JwtStrategy = JwtStrategy_1 = class JwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy) {
-    constructor(configService) {
-        super({
-            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: configService.get('JWT'),
-        });
-        this.configService = configService;
-        this.logger = new common_1.Logger(JwtStrategy_1.name);
-        this.logger.log(configService.get('JWT'));
-    }
-    validate(payload) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.logger.log('Validate' + JSON.stringify(payload));
-            return payload;
-        });
-    }
-};
-JwtStrategy = JwtStrategy_1 = tslib_1.__decorate([
-    common_1.Injectable(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _a : Object])
-], JwtStrategy);
-exports.JwtStrategy = JwtStrategy;
 
 
 /***/ }),
@@ -370,7 +327,7 @@ const app_module_1 = __webpack_require__(/*! ./app/app.module */ "./apps/server/
 function bootstrap() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
-        //app.use('/api/validate', raw({ type: 'application/json' }));
+        // Use the raw body parser to verify encoded messages from SFMC
         app.use(bodyParser.raw({ type: 'application/jwt' }));
         /*
         app.use(
@@ -467,17 +424,6 @@ module.exports = require("@nestjs/jwt");
 
 /***/ }),
 
-/***/ "@nestjs/passport":
-/*!***********************************!*\
-  !*** external "@nestjs/passport" ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("@nestjs/passport");
-
-/***/ }),
-
 /***/ "@nestjs/serve-static":
 /*!***************************************!*\
   !*** external "@nestjs/serve-static" ***!
@@ -508,17 +454,6 @@ module.exports = require("body-parser");
 /***/ (function(module, exports) {
 
 module.exports = require("jsonwebtoken");
-
-/***/ }),
-
-/***/ "passport-jwt":
-/*!*******************************!*\
-  !*** external "passport-jwt" ***!
-  \*******************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("passport-jwt");
 
 /***/ }),
 

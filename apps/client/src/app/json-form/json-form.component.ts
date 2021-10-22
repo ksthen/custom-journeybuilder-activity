@@ -49,7 +49,7 @@ export class JsonFormComponent implements OnInit {
     this.form.valueChanges
       .pipe(
         takeWhile(() => this.alive),
-        debounceTime(500),
+        debounceTime(800),
         map((formValue) => {
           if (!this.form.valid) {
             return;
