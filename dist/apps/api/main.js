@@ -246,7 +246,7 @@ let AppService = AppService_1 = class AppService {
         // TODO Call Leanplum API and return response
         return this.http.post(url, data, config).pipe(rxjs_1.map((response) => {
             this.logger.log(response.data);
-            return { status: 'Message sent ok' };
+            return { status: 'Message sent ok2' };
         }));
     }
 };

@@ -31,7 +31,7 @@ export class AppService {
     return this.http.post(url, data, config).pipe(
       map((response) => {
         this.logger.log(response.data);
-        return { status: 'Message sent ok' };
+        return { status: 'Message sent ok2' };
       })
     );
   }
