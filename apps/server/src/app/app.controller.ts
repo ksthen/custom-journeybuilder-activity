@@ -6,7 +6,10 @@ import {
   HttpCode,
   Post,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+
+import * as rawbody from 'raw-body';
 
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './jwt.auth.guard';
@@ -54,19 +57,32 @@ export class AppController {
 
   @Post('validate')
   @HttpCode(200)
-  validateActivity(@Headers() headers: any, @Body() body: any) {
+  async validateActivity(
+    @Headers() headers: any,
+    @Body() body: any,
+    @Req() req: Request
+  ) {
+    this.logger.log('Header:');
     this.logger.log(headers);
+    this.logger.log('Body:');
     this.logger.log(body);
+    this.logger.log(body.toString('utf8'));
 
-    const result = JWT.verify(
-      body.toString('utf8'),
-      this.configService.get('JWT'),
-      {
-        algorithms: ['HS256'],
-      }
-    );
+    try {
+      const result = JWT.verify(
+        body.toString('utf8'),
+        this.configService.get('JWT'),
+        {
+          algorithms: ['HS256'],
+        }
+      );
 
-    this.logger.log(result);
+      this.logger.log('Result');
+      this.logger.log(result);
+    } catch (err) {
+      this.logger.log(err);
+    }
+
     return { status: 'ok' };
   }
 

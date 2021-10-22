@@ -95,7 +95,7 @@
 
 "use strict";
 
-var AppController_1, _a, _b, _c;
+var AppController_1, _a, _b, _c, _d;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
@@ -129,14 +129,25 @@ let AppController = AppController_1 = class AppController {
         this.logger.log(`Stop - Body: ${JSON.stringify(body)}`);
         return { status: 'ok' };
     }
-    validateActivity(headers, body) {
-        this.logger.log(headers);
-        this.logger.log(body);
-        const result = JWT.verify(body.toString('utf8'), this.configService.get('JWT'), {
-            algorithms: ['HS256'],
+    validateActivity(headers, body, req) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this.logger.log('Header:');
+            this.logger.log(headers);
+            this.logger.log('Body:');
+            this.logger.log(body);
+            this.logger.log(body.toString('utf8'));
+            try {
+                const result = JWT.verify(body.toString('utf8'), this.configService.get('JWT'), {
+                    algorithms: ['HS256'],
+                });
+                this.logger.log('Result');
+                this.logger.log(result);
+            }
+            catch (err) {
+                this.logger.log(err);
+            }
+            return { status: 'ok' };
         });
-        this.logger.log(result);
-        return { status: 'ok' };
     }
     executeActivity(headers, body) {
         this.logger.log(`Execute - Headers: ${JSON.stringify(headers)}`);
@@ -178,9 +189,10 @@ tslib_1.__decorate([
     common_1.HttpCode(200),
     tslib_1.__param(0, common_1.Headers()),
     tslib_1.__param(1, common_1.Body()),
+    tslib_1.__param(2, common_1.Req()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object, Object]),
-    tslib_1.__metadata("design:returntype", void 0)
+    tslib_1.__metadata("design:paramtypes", [Object, Object, typeof (_a = typeof Request !== "undefined" && Request) === "function" ? _a : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
 ], AppController.prototype, "validateActivity", null);
 tslib_1.__decorate([
     common_1.Post('execute'),
@@ -193,7 +205,7 @@ tslib_1.__decorate([
 ], AppController.prototype, "executeActivity", null);
 AppController = AppController_1 = tslib_1.__decorate([
     common_1.Controller(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object, typeof (_b = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _b : Object, typeof (_c = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _c : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_b = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _b : Object, typeof (_c = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _c : Object, typeof (_d = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _d : Object])
 ], AppController);
 exports.AppController = AppController;
 
@@ -353,10 +365,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const core_1 = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
+const bodyParser = __webpack_require__(/*! body-parser */ "body-parser");
 const app_module_1 = __webpack_require__(/*! ./app/app.module */ "./apps/server/src/app/app.module.ts");
 function bootstrap() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
+        //app.use('/api/validate', raw({ type: 'application/json' }));
+        app.use(bodyParser.raw({ type: 'application/jwt' }));
         /*
         app.use(
           helmet({
@@ -471,6 +486,17 @@ module.exports = require("@nestjs/passport");
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/serve-static");
+
+/***/ }),
+
+/***/ "body-parser":
+/*!******************************!*\
+  !*** external "body-parser" ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("body-parser");
 
 /***/ }),
 

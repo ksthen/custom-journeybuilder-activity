@@ -5,12 +5,16 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import * as bodyParser from 'body-parser';
 
 import { AppModule } from './app/app.module';
 import * as helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //app.use('/api/validate', raw({ type: 'application/json' }));
+  app.use(bodyParser.raw({ type: 'application/jwt' }));
 
   /*
   app.use(
