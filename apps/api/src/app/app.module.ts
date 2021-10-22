@@ -6,7 +6,13 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [HttpModule, ConfigModule.forRoot({ envFilePath: '.env' })],
+  imports: [
+    HttpModule,
+    ConfigModule.forRoot({ envFilePath: '.env' }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

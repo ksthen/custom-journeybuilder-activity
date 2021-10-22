@@ -191,7 +191,13 @@ let AppModule = class AppModule {
 };
 AppModule = tslib_1.__decorate([
     common_1.Module({
-        imports: [axios_1.HttpModule, config_1.ConfigModule.forRoot({ envFilePath: '.env' })],
+        imports: [
+            axios_1.HttpModule,
+            config_1.ConfigModule.forRoot({ envFilePath: '.env' }),
+            ServeStaticModule.forRoot({
+                rootPath: join(__dirname, '..', 'client'),
+            }),
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
