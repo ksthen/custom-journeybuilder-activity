@@ -24,6 +24,9 @@ export class AuthGuard implements CanActivate {
     this.logger.log(header);
 
     const token = request.body.toString('utf8');
+    console.log(request.body);
+    console.log(token);
+    console.log(this.configService.get('JWT'));
     this.logger.log(token);
 
     return JWT.verify(
@@ -36,6 +39,9 @@ export class AuthGuard implements CanActivate {
         }
         this.logger.log(decoded);
         return true;
+      },
+      {
+        algorithms: ['HS256'],
       }
     );
   }

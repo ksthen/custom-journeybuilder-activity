@@ -285,6 +285,9 @@ let AuthGuard = AuthGuard_1 = class AuthGuard {
         const header = request.headers;
         this.logger.log(header);
         const token = request.body.toString('utf8');
+        console.log(request.body);
+        console.log(token);
+        console.log(this.configService.get('JWT'));
         this.logger.log(token);
         return JWT.verify(token, this.configService.get('JWT'), (err, decoded) => {
             if (err) {
@@ -293,6 +296,8 @@ let AuthGuard = AuthGuard_1 = class AuthGuard {
             }
             this.logger.log(decoded);
             return true;
+        }, {
+            algorithms: ['HS256'],
         });
     }
 };
