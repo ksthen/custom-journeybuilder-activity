@@ -18,17 +18,11 @@
       "header": "",
       "format": "json",
       "timeout": 10000,
-      "inArguments": [
-        {
-          "id": ""
-        },
-        {
-          "message": ""
-        },
-        {
-          "volvoId": ""
-        }
-      ],
+      "inArguments": {
+        "id": "",
+        "message": "",
+        "volvoId": ""
+      },
       "useJwt": true,
       "concurrentRequests": 1
     }

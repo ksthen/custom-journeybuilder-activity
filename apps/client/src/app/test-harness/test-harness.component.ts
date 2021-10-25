@@ -60,6 +60,8 @@ export class TestHarnessComponent implements OnInit {
             header: '',
             format: 'json',
             timeout: 10000,
+
+            /*
             inArguments: [
               {
                 id: 'id',
@@ -71,6 +73,12 @@ export class TestHarnessComponent implements OnInit {
                 volvoId: '{{test}}',
               },
             ],
+            */
+            inArguments: {
+              id: 'id',
+              message: 'message',
+              volvoId: '{{test}}',
+            },
           },
         },
         configurationArguments: {

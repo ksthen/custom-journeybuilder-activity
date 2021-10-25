@@ -29,7 +29,7 @@ export class JourneyBuilderCommunicationService {
   }
 
   // Update payload when form
-  updatePayload(inArguments: IInArgument[]) {
+  updatePayload(inArguments: any) {
     this.payload$
       .pipe(
         take(1),
