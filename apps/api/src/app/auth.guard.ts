@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   Logger,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { bindCallback, Observable, Subject } from 'rxjs';
 
 import * as JWT from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
@@ -20,29 +20,17 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
 
-    const header = request.headers;
-    this.logger.log(header);
-
     const token = request.body.toString('utf8');
-    console.log(request.body);
-    console.log(token);
-    console.log(this.configService.get('JWT'));
-    this.logger.log(token);
 
-    return JWT.verify(
-      token,
-      this.configService.get('JWT'),
-      (err: Error, decoded: any) => {
-        if (err) {
-          this.logger.log(err);
-          return false;
-        }
-        this.logger.log(decoded);
-        return true;
-      },
-      {
+    try {
+      const verified = JWT.verify(token, this.configService.get('JWT'), {
         algorithms: ['HS256'],
-      }
-    );
+      });
+      this.logger.log(verified);
+      return true;
+    } catch (err) {
+      this.logger.log(err);
+      return false;
+    }
   }
 }

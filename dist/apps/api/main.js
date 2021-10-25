@@ -105,6 +105,7 @@ const auth_guard_1 = __webpack_require__(/*! ./auth.guard */ "./apps/api/src/app
 let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
+        this.logger = new common_1.Logger(auth_guard_1.AuthGuard.name);
     }
     publishActivity() {
         return { status: 'ok' };
@@ -115,8 +116,9 @@ let AppController = class AppController {
     stopActivity() {
         return { status: 'ok' };
     }
-    validateActivity(headers) {
-        return this.appService.sendMessage(headers);
+    validateActivity(headers, body) {
+        return { status: 'ok' };
+        //return this.appService.sendMessage(headers);
     }
     executeActivity(headers) {
         return this.appService.sendMessage(headers);
@@ -148,8 +150,9 @@ tslib_1.__decorate([
     common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
     tslib_1.__param(0, common_1.Headers()),
+    tslib_1.__param(1, common_1.Body()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object]),
+    tslib_1.__metadata("design:paramtypes", [Object, Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "validateActivity", null);
 tslib_1.__decorate([
@@ -282,23 +285,18 @@ let AuthGuard = AuthGuard_1 = class AuthGuard {
     }
     canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        const header = request.headers;
-        this.logger.log(header);
         const token = request.body.toString('utf8');
-        console.log(request.body);
-        console.log(token);
-        console.log(this.configService.get('JWT'));
-        this.logger.log(token);
-        return JWT.verify(token, this.configService.get('JWT'), (err, decoded) => {
-            if (err) {
-                this.logger.log(err);
-                return false;
-            }
-            this.logger.log(decoded);
+        try {
+            const verified = JWT.verify(token, this.configService.get('JWT'), {
+                algorithms: ['HS256'],
+            });
+            this.logger.log(verified);
             return true;
-        }, {
-            algorithms: ['HS256'],
-        });
+        }
+        catch (err) {
+            this.logger.log(err);
+            return false;
+        }
     }
 };
 AuthGuard = AuthGuard_1 = tslib_1.__decorate([

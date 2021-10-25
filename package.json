@@ -64,6 +64,8 @@
     "@nestjs/platform-express": "^8.1.1",
     "@nestjs/serve-static": "^2.2.2",
     "@salesforce-ux/design-system": "^2.16.2",
+    "@types/body-parser": "^1.19.1",
+    "@types/jsonwebtoken": "^8.5.5",
     "body-parser": "^1.19.0",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",

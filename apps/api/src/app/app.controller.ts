@@ -3,6 +3,7 @@ import {
   Controller,
   Headers,
   HttpCode,
+  Logger,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -12,6 +13,8 @@ import { AuthGuard } from './auth.guard';
 
 @Controller()
 export class AppController {
+  private readonly logger = new Logger(AuthGuard.name);
+
   constructor(private readonly appService: AppService) {}
 
   @Post('publish')
@@ -35,8 +38,9 @@ export class AppController {
   @Post('validate')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  validateActivity(@Headers() headers: any) {
-    return this.appService.sendMessage(headers);
+  validateActivity(@Headers() headers: any, @Body() body: any) {
+    return { status: 'ok' };
+    //return this.appService.sendMessage(headers);
   }
 
   @Post('execute')
