@@ -73,6 +73,13 @@ export class JsonFormComponent implements OnInit {
     };
   }
 
+  hasError(formControlName: string): boolean {
+    return !this.form.get(formControlName)?.valid &&
+      this.form.get(formControlName)?.touched
+      ? true
+      : false;
+  }
+
   ngOnDestroy() {
     this.alive = false;
   }

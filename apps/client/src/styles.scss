@@ -1,4 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+// Fallback import of the most important styles to avoid CSS flicker at load
+
 html {
   background-color: white !important;
+}
+
+.loading {
+  visibility: hidden;
 }

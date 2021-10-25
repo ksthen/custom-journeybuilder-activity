@@ -29,7 +29,8 @@
           "volvoId": ""
         }
       ],
-      "useJwt": true
+      "useJwt": true,
+      "concurrentRequests": 1
     }
   },
   "configurationArguments": {

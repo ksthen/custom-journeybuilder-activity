@@ -158,6 +158,14 @@ client - assets
 
 "node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css",
 
+Hide the app while loading slds
+
+<div class="loading slds-visible">
+
+.loading {
+visibility: hidden;
+}
+
 Restart server
 
 ## Front-end

@@ -1,0 +1,15 @@
+<div
+  class="slds-form-element slds-m-top_small"
+  [ngClass]="{
+    'slds-has-error': hasError
+  }"
+>
+  <label class="slds-form-element__label">
+    <abbr class="slds-required" title="required" *ngIf="required">* </abbr>
+    {{ label }}</label
+  >
+  <div class="slds-form-element__control">
+    <ng-content></ng-content>
+  </div>
+  <div class="slds-form-element__help" *ngIf="hasError">{{ errorText }}</div>
+</div>

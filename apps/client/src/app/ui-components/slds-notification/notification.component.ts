@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'jb-notification',
+  selector: 'slds-notification',
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -12,7 +12,6 @@ import { IInArgument, IPayload } from './models';
 export class JourneyBuilderCommunicationService {
   private connection = new Postmonger.Session();
   public payload$ = new ReplaySubject<IPayload>(1);
-  public inArguments$ = new ReplaySubject<any[]>(1);
 
   constructor() {
     // Tell Journey Builder that the app is ready to recieve the initActivity payload
@@ -20,20 +19,17 @@ export class JourneyBuilderCommunicationService {
 
     // Recieve payload from Journey Builder
     this.connection.on('initActivity', (payload: IPayload) => {
-      console.log('Init activity', payload);
       this.payload$.next(payload);
-      this.inArguments$.next(payload.arguments.execute.inArguments);
     });
 
     // Trigger save when user cilkcs 'next'
     this.connection.on('clickedNext', () => {
-      console.log('Next step clicked');
       this.saveData();
     });
   }
 
+  // Update payload when form
   updatePayload(inArguments: IInArgument[]) {
-    console.log(inArguments);
     this.payload$
       .pipe(
         take(1),
@@ -46,12 +42,11 @@ export class JourneyBuilderCommunicationService {
   }
 
   saveData(): void {
-    combineLatest([this.payload$, this.inArguments$])
+    this.payload$
       .pipe(
         take(1),
-        map(([payload, inArguments]) => {
+        map((payload) => {
           payload.metaData.isConfigured = true;
-          console.log('Saving:', payload);
           this.connection.trigger('updateActivity', payload);
         })
       )

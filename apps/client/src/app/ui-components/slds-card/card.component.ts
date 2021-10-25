@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'jb-card',
+  selector: 'slds-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

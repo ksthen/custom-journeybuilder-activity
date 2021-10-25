@@ -8,8 +8,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { combineLatest, Subject, Subscription } from 'rxjs';
-import { map, take, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { map, takeWhile, tap } from 'rxjs/operators';
 import { JourneyBuilderCommunicationService } from '../jb.service';
 import { IInArgument, IPayload } from '../models';
 
@@ -20,6 +19,7 @@ import { IInArgument, IPayload } from '../models';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class FormComponent implements OnInit, OnDestroy {
+  @Input()
   private alive = true;
 
   public form = new FormGroup({});
@@ -75,6 +75,13 @@ export class FormComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  hasError(formControlName: string): boolean {
+    return !this.form.get(formControlName)?.valid &&
+      this.form.get(formControlName)?.touched
+      ? true
+      : false;
   }
 
   ngOnDestroy(): void {

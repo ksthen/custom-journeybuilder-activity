@@ -1,100 +1,60 @@
-<form [formGroup]="form">
-  <div class="slds-form">
-    <div
-      class="slds-form-element slds-m-top_small"
-      [ngClass]="{
-        'slds-has-error': !form.get('id')?.valid && form.get('id')?.touched
-      }"
-    >
-      <label class="slds-form-element__label">
-        <abbr class="slds-required" title="required">* </abbr>
-        Campaign ID</label
-      >
-      <div class="slds-form-element__control">
-        <input
-          required=""
-          formControlName="id"
-          type="text"
-          placeholder="Add campaign ID…"
-          required=""
-          class="slds-input"
-        />
-      </div>
-      <div
-        class="slds-form-element__help"
-        *ngIf="!form.get('id')?.valid && form.get('id')?.touched"
-      >
-        ID is required.
-      </div>
-      <jb-notification
-        text="Enter ID of the Leanplum campaign you would like to target."
-        linkText="Open leanplum"
-        link="https://www.leanplum.com/"
-      ></jb-notification>
-    </div>
+<form [formGroup]="form" class="slds-form">
+  <slds-form-element
+    [hasError]="hasError('id')"
+    [required]="true"
+    label="Campaign ID"
+    errorText="ID is required."
+  >
+    <input
+      required=""
+      formControlName="id"
+      type="text"
+      placeholder="Add campaign ID…"
+      required=""
+      class="slds-input"
+    />
+  </slds-form-element>
+  <slds-notification
+    text="Enter ID of the Leanplum campaign you would like to target."
+    linkText="Open leanplum"
+    link="https://www.leanplum.com/"
+  ></slds-notification>
 
-    <div
-      class="slds-form-element slds-m-top_small"
-      [ngClass]="{
-        'slds-has-error': !form.get('message')?.valid && form.get('id')?.touched
-      }"
-    >
-      <label class="slds-form-element__label">
-        <abbr class="slds-required" title="required">* </abbr>
-        Message</label
-      >
-      <div class="slds-form-element__control">
-        <textarea
-          formControlName="message"
-          placeholder="Add campaign message…"
-          class="slds-textarea"
-        ></textarea>
-      </div>
-      <div
-        class="slds-form-element__help"
-        *ngIf="!form.get('message')?.valid && form.get('message')?.touched"
-      >
-        Message is required.
-      </div>
-      <jb-notification
-        text="Enter the message you would like to send to your users. Do not include any PII data since Leanplum is not equiped to handle it."
-      ></jb-notification>
-    </div>
+  <slds-form-element
+    [hasError]="hasError('message')"
+    [required]="true"
+    label="Message"
+    errorText="Message is required."
+  >
+    <textarea
+      formControlName="message"
+      placeholder="Add campaign message…"
+      class="slds-textarea"
+    ></textarea>
+  </slds-form-element>
 
-    <div
-      class="slds-form-element slds-m-top_small"
-      [ngClass]="{
-        'slds-has-error':
-          !form.get('volvoId')?.valid && form.get('volvoId  ')?.touched
-      }"
-    >
-      <label class="slds-form-element__label">
-        <abbr class="slds-required" title="required">* </abbr>
-        Volvo ID Binding</label
-      >
-      <div class="slds-form-element__control">
-        <input
-          required=""
-          formControlName="volvoId"
-          type="text"
-          placeholder="Add Volvo ID…"
-          required=""
-          class="slds-input"
-        />
-      </div>
-      <div
-        class="slds-form-element__help"
-        *ngIf="!form.get('volvoId')?.valid && form.get('volvoId')?.touched"
-      >
-        Data binding for Volvo ID is required.
-      </div>
-      <jb-notification
-        [text]="
-          'Add Data Binding for the Volvo ID: {{Contact.Attribute.JOURNEY_DE.ATTRIBUTE}} where JOURNEY_DE is the name of the entry data extension of the joureny and ATTRIBUTE is the attribute where the Volvo Id is stored. '
-        "
-        linkText="Read more."
-        link="https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/how-data-binding-works.html"
-      ></jb-notification>
-    </div>
-  </div>
+  <slds-notification
+    text="Enter the message you would like to send to your users. Do not include any PII data since Leanplum is not equiped to handle it."
+  ></slds-notification>
+
+  <slds-form-element
+    [hasError]="hasError('volvoId')"
+    [required]="true"
+    label="Volvo ID Binding"
+    errorText="Volvo ID binding is required."
+  >
+    <textarea
+      formControlName="volvoId"
+      placeholder="Volvo ID data binding"
+      class="slds-textarea"
+    ></textarea>
+  </slds-form-element>
+
+  <slds-notification
+    [text]="
+      'Add Data Binding for the Volvo ID: {{Contact.Attribute.JOURNEY_DE.ATTRIBUTE}} where JOURNEY_DE is the name of the entry data extension of the joureny and ATTRIBUTE is the attribute where the Volvo Id is stored. '
+    "
+    linkText="Read more."
+    link="https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/how-data-binding-works.html"
+  ></slds-notification>
 </form>

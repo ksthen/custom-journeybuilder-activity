@@ -1,28 +1,14 @@
-<form [formGroup]="form">
-  <div class="slds-form">
-    <div
-      class="slds-form-element slds-m-top_small"
-      [ngClass]="{
-        'slds-has-error': !form.get('json')?.valid && form.get('json')?.touched
-      }"
-    >
-      <label class="slds-form-element__label">
-        <abbr class="slds-required" title="required">* </abbr>
-        Config.json</label
-      >
-      <div class="slds-form-element__control">
-        <textarea
-          formControlName="json"
-          placeholder="Add json"
-          class="slds-textarea"
-        ></textarea>
-      </div>
-      <div
-        class="slds-form-element__help"
-        *ngIf="!form.get('json')?.valid && form.get('json')?.touched"
-      >
-        {{ form.get('json')?.errors?.error | json }}
-      </div>
-    </div>
-  </div>
+<form [formGroup]="form" class="slds-form">
+  <slds-form-element
+    [hasError]="hasError('json')"
+    [required]="true"
+    label="Config.json"
+    [errorText]="form.get('json')?.errors?.error | json"
+  >
+    <textarea
+      formControlName="json"
+      placeholder="Add json"
+      class="slds-textarea"
+    ></textarea>
+  </slds-form-element>
 </form>
