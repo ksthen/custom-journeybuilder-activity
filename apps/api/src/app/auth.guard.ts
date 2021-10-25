@@ -23,7 +23,6 @@ export class AuthGuard implements CanActivate {
     const token = request.body.toString('utf8');
 
     this.logger.log(token);
-    this.logger.log(this.configService.get('JWT'));
 
     try {
       const verified = JWT.verify(token, this.configService.get('JWT'), {

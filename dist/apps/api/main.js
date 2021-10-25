@@ -95,19 +95,16 @@
 
 "use strict";
 
-var _a, _b;
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/api/src/app/app.service.ts");
 const auth_guard_1 = __webpack_require__(/*! ./auth.guard */ "./apps/api/src/app/auth.guard.ts");
-const JWT = __webpack_require__(/*! jsonwebtoken */ "jsonwebtoken");
 let AppController = class AppController {
-    constructor(appService, configService) {
+    constructor(appService) {
         this.appService = appService;
-        this.configService = configService;
         this.logger = new common_1.Logger(auth_guard_1.AuthGuard.name);
     }
     publishActivity() {
@@ -119,29 +116,8 @@ let AppController = class AppController {
     stopActivity() {
         return { status: 'ok' };
     }
-    validateActivity(headers, body) {
-        this.logger.log('=====Controller====');
-        this.logger.log('Headers:');
-        this.logger.log(headers);
-        const token = body.toString('utf8');
-        this.logger.log('Token and JWT');
-        this.logger.log(token);
-        this.logger.log(this.configService.get('JWT'));
-        try {
-            const verified = JWT.verify(token, this.configService.get('JWT'), {
-                algorithms: ['HS256'],
-            });
-            this.logger.log('Verified');
-            this.logger.log(verified);
-            return true;
-        }
-        catch (err) {
-            this.logger.log('Error');
-            this.logger.log(err);
-            return false;
-        }
-        return { status: 'ok' };
-        //return this.appService.sendMessage(headers);
+    validateActivity(headers) {
+        return this.appService.sendMessage(headers);
     }
     executeActivity(headers) {
         return this.appService.sendMessage(headers);
@@ -149,6 +125,7 @@ let AppController = class AppController {
 };
 tslib_1.__decorate([
     common_1.Post('publish'),
+    common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", []),
@@ -156,6 +133,7 @@ tslib_1.__decorate([
 ], AppController.prototype, "publishActivity", null);
 tslib_1.__decorate([
     common_1.Post('save'),
+    common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", []),
@@ -163,6 +141,7 @@ tslib_1.__decorate([
 ], AppController.prototype, "saveActivity", null);
 tslib_1.__decorate([
     common_1.Post('stop'),
+    common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", []),
@@ -173,9 +152,8 @@ tslib_1.__decorate([
     common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
     tslib_1.__param(0, common_1.Headers()),
-    tslib_1.__param(1, common_1.Body()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object, Object]),
+    tslib_1.__metadata("design:paramtypes", [Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "validateActivity", null);
 tslib_1.__decorate([
@@ -189,7 +167,7 @@ tslib_1.__decorate([
 ], AppController.prototype, "executeActivity", null);
 AppController = tslib_1.__decorate([
     common_1.Controller(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object, typeof (_b = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _b : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object])
 ], AppController);
 exports.AppController = AppController;
 
@@ -310,7 +288,6 @@ let AuthGuard = AuthGuard_1 = class AuthGuard {
         const request = context.switchToHttp().getRequest();
         const token = request.body.toString('utf8');
         this.logger.log(token);
-        this.logger.log(this.configService.get('JWT'));
         try {
             const verified = JWT.verify(token, this.configService.get('JWT'), {
                 algorithms: ['HS256'],

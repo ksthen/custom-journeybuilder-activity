@@ -35,19 +35,23 @@
   "configurationArguments": {
     "save": {
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/save",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     },
     "publish": {
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/publish",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     },
     "stop": {
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/stop",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     },
     "validate": {
       "url": "https://custom-journeybuilder-activity.herokuapp.com/api/validate",
-      "verb": "POST"
+      "verb": "POST",
+      "useJwt": true
     }
   },
   "userInterfaces": {
