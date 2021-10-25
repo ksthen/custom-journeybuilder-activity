@@ -95,16 +95,19 @@
 
 "use strict";
 
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/api/src/app/app.service.ts");
 const auth_guard_1 = __webpack_require__(/*! ./auth.guard */ "./apps/api/src/app/auth.guard.ts");
+const JWT = __webpack_require__(/*! jsonwebtoken */ "jsonwebtoken");
 let AppController = class AppController {
-    constructor(appService) {
+    constructor(appService, configService) {
         this.appService = appService;
+        this.configService = configService;
         this.logger = new common_1.Logger(auth_guard_1.AuthGuard.name);
     }
     publishActivity() {
@@ -117,6 +120,26 @@ let AppController = class AppController {
         return { status: 'ok' };
     }
     validateActivity(headers, body) {
+        this.logger.log('=====Controller====');
+        this.logger.log('Headers:');
+        this.logger.log(headers);
+        const token = body.toString('utf8');
+        this.logger.log('Token and JWT');
+        this.logger.log(token);
+        this.logger.log(this.configService.get('JWT'));
+        try {
+            const verified = JWT.verify(token, this.configService.get('JWT'), {
+                algorithms: ['HS256'],
+            });
+            this.logger.log('Verified');
+            this.logger.log(verified);
+            return true;
+        }
+        catch (err) {
+            this.logger.log('Error');
+            this.logger.log(err);
+            return false;
+        }
         return { status: 'ok' };
         //return this.appService.sendMessage(headers);
     }
@@ -166,7 +189,7 @@ tslib_1.__decorate([
 ], AppController.prototype, "executeActivity", null);
 AppController = tslib_1.__decorate([
     common_1.Controller(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object, typeof (_b = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _b : Object])
 ], AppController);
 exports.AppController = AppController;
 
@@ -286,6 +309,8 @@ let AuthGuard = AuthGuard_1 = class AuthGuard {
     canActivate(context) {
         const request = context.switchToHttp().getRequest();
         const token = request.body.toString('utf8');
+        this.logger.log(token);
+        this.logger.log(this.configService.get('JWT'));
         try {
             const verified = JWT.verify(token, this.configService.get('JWT'), {
                 algorithms: ['HS256'],
@@ -295,7 +320,7 @@ let AuthGuard = AuthGuard_1 = class AuthGuard {
         }
         catch (err) {
             this.logger.log(err);
-            return false;
+            return true;
         }
     }
 };
@@ -330,11 +355,11 @@ const bodyParser = __webpack_require__(/*! body-parser */ "body-parser");
 function bootstrap() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
-        // Use the raw body parser to verify encoded messages from SFMC
-        app.use(bodyParser.raw({ type: 'application/jwt' }));
         const globalPrefix = 'api';
         app.setGlobalPrefix(globalPrefix);
         const port = process.env.PORT || 3333;
+        // Use   the raw body parser to verify encoded messages from SFMC
+        app.use(bodyParser.raw({ type: 'application/jwt' }));
         yield app.listen(port, () => {
             common_1.Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
         });
