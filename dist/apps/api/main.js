@@ -116,10 +116,16 @@ let AppController = class AppController {
     stopActivity() {
         return { status: 'ok' };
     }
-    validateActivity(headers) {
+    validateActivity(headers, body) {
+        this.logger.log('Validate');
+        this.logger.log(headers);
+        this.logger.log(body);
         return this.appService.sendMessage(headers);
     }
-    executeActivity(headers) {
+    executeActivity(headers, body) {
+        this.logger.log('Execute');
+        this.logger.log(headers);
+        this.logger.log(body);
         return this.appService.sendMessage(headers);
     }
 };
@@ -152,8 +158,9 @@ tslib_1.__decorate([
     common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
     tslib_1.__param(0, common_1.Headers()),
+    tslib_1.__param(1, common_1.Body()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object]),
+    tslib_1.__metadata("design:paramtypes", [Object, Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "validateActivity", null);
 tslib_1.__decorate([
@@ -161,8 +168,9 @@ tslib_1.__decorate([
     common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
     tslib_1.__param(0, common_1.Headers()),
+    tslib_1.__param(1, common_1.Body()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object]),
+    tslib_1.__metadata("design:paramtypes", [Object, Object]),
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "executeActivity", null);
 AppController = tslib_1.__decorate([
@@ -245,12 +253,13 @@ let AppService = AppService_1 = class AppService {
                 //  authorization: `Bearer ${this.configService.get('LEANPLUM_TOKEN')}`,
             },
         };
+        this.logger.log(headers);
         // TODO - Figure out what format to provide
         const data = Object.assign({}, headers);
         // TODO Call Leanplum API and return response
         return this.http.post(url, data, config).pipe(rxjs_1.map((response) => {
             this.logger.log(response.data);
-            return { status: 'Message sent ok2' };
+            return { status: 'Message sent ok' };
         }));
     }
 };

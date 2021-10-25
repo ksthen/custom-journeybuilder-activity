@@ -22,6 +22,8 @@ export class AppService {
       },
     };
 
+    this.logger.log(headers);
+
     // TODO - Figure out what format to provide
     const data = {
       ...headers,
@@ -31,7 +33,7 @@ export class AppService {
     return this.http.post(url, data, config).pipe(
       map((response) => {
         this.logger.log(response.data);
-        return { status: 'Message sent ok2' };
+        return { status: 'Message sent ok' };
       })
     );
   }

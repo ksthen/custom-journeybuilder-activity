@@ -43,20 +43,12 @@ export class FormComponent implements OnInit, OnDestroy {
       .pipe(
         takeWhile(() => this.alive),
         tap((payload) => {
-          const inArguments = payload.arguments.execute.inArguments;
-          this.form.patchValue(
-            { ...inArguments },
-            { onlySelf: true, emitEvent: false }
-          );
-
-          /*
           payload.arguments.execute.inArguments.forEach((inArgument) =>
             this.form.patchValue(
               { ...inArgument },
               { onlySelf: true, emitEvent: false }
             )
           );
-          */
         })
       )
       .subscribe();
@@ -67,7 +59,6 @@ export class FormComponent implements OnInit, OnDestroy {
         takeWhile(() => this.alive),
         map((value: any) => {
           if (this.form.valid) {
-            /*
             const inArguments: IInArgument[] = [
               {
                 id: value.id,
@@ -79,9 +70,6 @@ export class FormComponent implements OnInit, OnDestroy {
                 volvoId: value.volvoId,
               },
             ];
-            */
-
-            const inArguments = { ...this.form.value };
             this.jb.updatePayload(inArguments);
           }
         })
