@@ -46,7 +46,7 @@ export class AppController {
     this.logger.log('Validate');
     this.logger.log(headers);
     this.logger.log(body);
-    return this.appService.sendMessage(headers);
+    return this.appService.sendMessage(headers, body);
   }
 
   @Post('execute')
@@ -56,6 +56,6 @@ export class AppController {
     this.logger.log('Execute');
     this.logger.log(headers);
     this.logger.log(body);
-    return this.appService.sendMessage(headers);
+    return this.appService.sendMessage(headers, body);
   }
 }
