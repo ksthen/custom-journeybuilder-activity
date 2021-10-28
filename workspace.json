@@ -71,7 +71,11 @@
             "assets": [
               "apps/client/src/favicon.ico",
               "apps/client/src/assets",
-              { "glob": "config.json", "input": "src/assets/", "output": "/" },
+              {
+                "glob": "config.json",
+                "input": "apps/client/src/assets/",
+                "output": "/"
+              },
               {
                 "glob": "**/*",
                 "input": "node_modules/@salesforce-ux/design-system/assets/",

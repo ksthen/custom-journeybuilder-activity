@@ -116,17 +116,11 @@ let AppController = class AppController {
     stopActivity() {
         return { status: 'ok' };
     }
-    validateActivity(headers, body) {
-        this.logger.log('Validate');
-        this.logger.log(headers);
-        this.logger.log(body);
-        return this.appService.sendMessage(headers);
+    validateActivity() {
+        return { status: 'ok' };
     }
     executeActivity(headers, body) {
-        this.logger.log('Execute');
-        this.logger.log(headers);
-        this.logger.log(body);
-        return this.appService.sendMessage(headers);
+        return this.appService.sendMessage(headers, body);
     }
 };
 tslib_1.__decorate([
@@ -157,10 +151,8 @@ tslib_1.__decorate([
     common_1.Post('validate'),
     common_1.UseGuards(auth_guard_1.AuthGuard),
     common_1.HttpCode(200),
-    tslib_1.__param(0, common_1.Headers()),
-    tslib_1.__param(1, common_1.Body()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [Object, Object]),
+    tslib_1.__metadata("design:paramtypes", []),
     tslib_1.__metadata("design:returntype", void 0)
 ], AppController.prototype, "validateActivity", null);
 tslib_1.__decorate([
@@ -238,13 +230,25 @@ const axios_1 = __webpack_require__(/*! @nestjs/axios */ "@nestjs/axios");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
 const rxjs_1 = __webpack_require__(/*! rxjs */ "rxjs");
+const JWT = __webpack_require__(/*! jsonwebtoken */ "jsonwebtoken");
 let AppService = AppService_1 = class AppService {
     constructor(http, configService) {
         this.http = http;
         this.configService = configService;
         this.logger = new common_1.Logger(AppService_1.name);
     }
-    sendMessage(headers) {
+    decodeBody(body) {
+        try {
+            return JWT.verify(body.toString('utf8'), this.configService.get('JWT'), {
+                algorithms: ['HS256'],
+            });
+        }
+        catch (err) {
+            this.logger.log(err);
+            return false;
+        }
+    }
+    sendMessage(headers, body) {
         // TODO - Figure out how the leanplum authorization works
         const url = this.configService.get('REST_ENDPOINT');
         const config = {
@@ -253,11 +257,14 @@ let AppService = AppService_1 = class AppService {
                 //  authorization: `Bearer ${this.configService.get('LEANPLUM_TOKEN')}`,
             },
         };
-        this.logger.log(headers);
         // TODO - Figure out what format to provide
-        const data = Object.assign({}, headers);
+        const messageBody = Object.assign({}, this.decodeBody(body));
+        this.logger.log('Headers');
+        this.logger.log(headers);
+        this.logger.log('Body');
+        this.logger.log(messageBody);
         // TODO Call Leanplum API and return response
-        return this.http.post(url, data, config).pipe(rxjs_1.map((response) => {
+        return this.http.post(url, messageBody, config).pipe(rxjs_1.map((response) => {
             this.logger.log(response.data);
             return { status: 'Message sent ok' };
         }));
@@ -286,33 +293,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthGuard = void 0;
 const tslib_1 = __webpack_require__(/*! tslib */ "tslib");
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
-const JWT = __webpack_require__(/*! jsonwebtoken */ "jsonwebtoken");
-const config_1 = __webpack_require__(/*! @nestjs/config */ "@nestjs/config");
+const app_service_1 = __webpack_require__(/*! ./app.service */ "./apps/api/src/app/app.service.ts");
 let AuthGuard = AuthGuard_1 = class AuthGuard {
-    constructor(configService) {
-        this.configService = configService;
+    constructor(service) {
+        this.service = service;
         this.logger = new common_1.Logger(AuthGuard_1.name);
     }
     canActivate(context) {
-        const request = context.switchToHttp().getRequest();
-        const token = request.body.toString('utf8');
-        this.logger.log(token);
-        try {
-            const verified = JWT.verify(token, this.configService.get('JWT'), {
-                algorithms: ['HS256'],
-            });
-            this.logger.log(verified);
-            return true;
-        }
-        catch (err) {
-            this.logger.log(err);
-            return true;
-        }
+        return this.service.decodeBody(context.switchToHttp().getRequest().body)
+            ? true
+            : false;
     }
 };
 AuthGuard = AuthGuard_1 = tslib_1.__decorate([
     common_1.Injectable(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof config_1.ConfigService !== "undefined" && config_1.ConfigService) === "function" ? _a : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof app_service_1.AppService !== "undefined" && app_service_1.AppService) === "function" ? _a : Object])
 ], AuthGuard);
 exports.AuthGuard = AuthGuard;
 
