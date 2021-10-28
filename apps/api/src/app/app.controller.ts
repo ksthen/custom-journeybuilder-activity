@@ -42,20 +42,14 @@ export class AppController {
   @Post('validate')
   @UseGuards(AuthGuard)
   @HttpCode(200)
-  validateActivity(@Headers() headers: any, @Body() body: any) {
-    this.logger.log('Validate');
-    this.logger.log(headers);
-    this.logger.log(body);
-    return this.appService.sendMessage(headers, body);
+  validateActivity() {
+    return { status: 'ok' };
   }
 
   @Post('execute')
   @UseGuards(AuthGuard)
   @HttpCode(200)
   executeActivity(@Headers() headers: any, @Body() body: any) {
-    this.logger.log('Execute');
-    this.logger.log(headers);
-    this.logger.log(body);
     return this.appService.sendMessage(headers, body);
   }
 }

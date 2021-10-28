@@ -12,8 +12,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NotificationComponent implements OnInit {
-  @Input() text: string = '';
-  @Input() link: string = '';
+  @Input() description: string = '';
+  @Input() linkUrl: string = '';
   @Input() linkText: string = '';
 
   constructor() {}

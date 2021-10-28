@@ -14,7 +14,7 @@ import {
 export class SldsFormElementComponent implements OnInit {
   @Input() hasError: boolean | undefined = false;
   @Input() label: string = '';
-  @Input() required: boolean = true;
+  @Input() required: boolean = false;
   @Input() errorText = '';
 
   constructor() {}

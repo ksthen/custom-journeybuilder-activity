@@ -15,7 +15,18 @@ export interface KeyValue {
 }
 
 export interface IInArgument {
-  [key: string]: string;
+  description?: string;
+  errorText?: string;
+  key: string;
+  label?: string;
+  linkUrl?: string;
+  linkText?: string;
+  options?: string[];
+  placeholder?: string;
+  required?: boolean;
+  type: string;
+  value: string;
+  visible?: boolean;
 }
 
 export interface IPayload {
@@ -27,7 +38,7 @@ export interface IPayload {
       timeout: number;
       url: string;
       verb: string;
-      inArguments: KeyValue[];
+      inArguments: IInArgument[];
     };
   };
   configurationArguments: {

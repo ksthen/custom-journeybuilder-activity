@@ -28,17 +28,8 @@ export class JourneyBuilderCommunicationService {
     });
   }
 
-  // Update payload when form
-  updatePayload(inArguments: any) {
-    this.payload$
-      .pipe(
-        take(1),
-        tap((payload) => {
-          payload.arguments.execute.inArguments = inArguments;
-          this.payload$.next({ ...payload });
-        })
-      )
-      .subscribe();
+  updatePayload(payload: IPayload) {
+    this.payload$.next(JSON.parse(JSON.stringify(payload)));
   }
 
   saveData(): void {

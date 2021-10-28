@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { debounceTime, map, takeWhile, tap } from 'rxjs/operators';
-import { JourneyBuilderCommunicationService } from '../jb.service';
+import { JourneyBuilderCommunicationService } from '../../jb.service';
 
 @Component({
   selector: 'jb-json-form',
@@ -16,23 +16,30 @@ import { JourneyBuilderCommunicationService } from '../jb.service';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class JsonFormComponent implements OnInit {
-  public form!: FormGroup;
+  public form = new FormGroup({});
   private alive = true;
 
   constructor(
     private fb: FormBuilder,
-    public jb: JourneyBuilderCommunicationService
-  ) {
-    this.buildForm();
-  }
+    public jbService: JourneyBuilderCommunicationService
+  ) {}
 
   ngOnInit() {
-    this.jb.payload$
+    this.jbService.payload$
       .pipe(
-        tap((json) => {
+        takeWhile(() => this.alive),
+        tap((data) => {
+          const json: string = JSON.stringify(data, null, 2);
+
+          if (!this.form.get('json')) {
+            this.form = this.fb.group({
+              json: [json, [Validators.required, this.validateJson()]],
+            });
+          }
+
           this.form.patchValue(
             {
-              json: JSON.stringify(json, null, 2),
+              json,
             },
             { emitEvent: false, onlySelf: true }
           );
@@ -41,25 +48,12 @@ export class JsonFormComponent implements OnInit {
       .subscribe();
   }
 
-  buildForm() {
-    this.form = this.fb.group({
-      json: ['', [Validators.required, this.validateJson()]],
-    });
-
-    this.form.valueChanges
-      .pipe(
-        takeWhile(() => this.alive),
-        debounceTime(800),
-        map((formValue) => {
-          if (!this.form.valid) {
-            return;
-          } else {
-            console.log(formValue);
-            this.jb.payload$.next(JSON.parse(formValue.json));
-          }
-        })
-      )
-      .subscribe();
+  updatePayload() {
+    if (!this.form.valid && !this.form?.get('json')?.value) {
+      return;
+    }
+    const updatedPayload = JSON.parse(this.form?.get('json')?.value);
+    this.jbService.updatePayload(updatedPayload);
   }
 
   validateJson(): ValidatorFn {

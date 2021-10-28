@@ -1,4 +1,5 @@
 <div
+  *ngIf="description || (linkText && linkUrl)"
   class="
     slds-m-top_small
     slds-scoped-notification slds-media slds-media_center
@@ -24,12 +25,12 @@
   </div>
   <div class="slds-media__body">
     <p>
-      {{ text }}
+      {{ description }}
       <a
-        [href]="link"
+        [href]="linkUrl"
         targte="_blank"
         rel="noopener noreferrer"
-        *ngIf="link && linkText"
+        *ngIf="linkUrl && linkText"
         >{{ linkText }}</a
       >
     </p>

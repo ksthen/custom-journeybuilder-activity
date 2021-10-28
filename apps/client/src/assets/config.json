@@ -1,0 +1,110 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "assets/icon.jpg",
+    "category": "message"
+  },
+  "type": "REST",
+  "lang": {
+    "en-US": {
+      "description": "Custom Activity"
+    }
+  },
+  "arguments": {
+    "execute": {
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/execute",
+      "verb": "POST",
+      "body": "",
+      "header": "",
+      "format": "json",
+      "timeout": 10000,
+      "inArguments": [
+        {
+          "key": "campaignId",
+          "value": "ID",
+          "label": "Campaign ID",
+          "placeholder": "Add Campaign ID",
+          "errorText": "Value is required",
+          "description": "Enter ID of the Leanplum campaign you would like to target.",
+          "linkText": "Open leanplum",
+          "linkUrl": "https://www.leanplum.com/",
+          "type": "input",
+          "required": true,
+          "visible": true
+        },
+        {
+          "key": "message",
+          "value": "Message",
+          "label": "Message",
+          "placeholder": "dd campaign message…",
+          "description": "Enter the message you would like to send to your users. Do not include any PII data since Leanplum is not equiped to handle it.",
+          "errorText": "Value is required",
+          "type": "textarea",
+          "required": true,
+          "visible": true
+        },
+        {
+          "key": "volvoId",
+          "value": "{{Contact.Attribute.JOURNEY_DE.ATTRIBUTE}}",
+          "label": "Volvo ID Binding",
+          "placeholder": "Volvo ID Data Binding",
+          "description": "Add Data Binding for the Volvo ID: {{Contact.Attribute.JOURNEY_DE.ATTRIBUTE}} where JOURNEY_DE is the name of the entry data extension of the joureny and ATTRIBUTE is the attribute where the Volvo Id is stored. ",
+          "errorText": "Value is required",
+          "linkText": "Read more",
+          "linkUrl": "https://developer.salesforce.com/docs/marketing/marketing-cloud/guide/how-data-binding-works.html",
+          "type": "input",
+          "required": true,
+          "visible": true
+        },
+        {
+          "key": "messageType",
+          "value": "",
+          "label": "Message type",
+          "description": "Select message type: In App message or Push notification",
+          "errorText": "Value is required",
+          "linkText": "Read more",
+          "linkUrl": "https://docs.leanplum.com/docs/in-app-messages",
+          "type": "select",
+          "options": ["in-app", "push"],
+          "required": true,
+          "visible": true
+        },
+        {
+          "key": "debug",
+          "type": "debug"
+        }
+      ],
+      "useJwt": true,
+      "concurrentRequests": 1
+    }
+  },
+  "configurationArguments": {
+    "save": {
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/save",
+      "verb": "POST",
+      "useJwt": true
+    },
+    "publish": {
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/publish",
+      "verb": "POST",
+      "useJwt": true
+    },
+    "stop": {
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/stop",
+      "verb": "POST",
+      "useJwt": true
+    },
+    "validate": {
+      "url": "https://custom-journeybuilder-activity.herokuapp.com/api/validate",
+      "verb": "POST",
+      "useJwt": true
+    }
+  },
+  "userInterfaces": {
+    "configInspector": {
+      "hideHeader": true,
+      "size": "scm-sm"
+    }
+  },
+  "wizardSteps": [{ "label": "Step 1", "key": "step1", "active": true }]
+}

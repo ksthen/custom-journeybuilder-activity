@@ -35,14 +35,13 @@ export class AppService {
       },
     };
 
-    this.logger.log('Headers');
-    this.logger.log(headers);
-
     // TODO - Figure out what format to provide
     const messageBody = {
-      ...headers,
       ...this.decodeBody(body),
     };
+
+    this.logger.log('Headers');
+    this.logger.log(headers);
 
     this.logger.log('Body');
     this.logger.log(messageBody);

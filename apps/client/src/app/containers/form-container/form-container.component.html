@@ -1,0 +1,51 @@
+<form
+  [formGroup]="form"
+  class="slds-form"
+  *ngIf="payload?.arguments?.execute?.inArguments"
+>
+  <ng-container
+    *ngFor="
+      let inArgument of payload.arguments.execute.inArguments;
+      trackBy: trackByFn
+    "
+  >
+    <slds-form-element
+      [hasError]="hasError(inArgument)"
+      [required]="inArgument.required ? true : false"
+      [label]="inArgument.label ? inArgument.label : ''"
+      [errorText]="inArgument.errorText ? inArgument.errorText : ''"
+    >
+      <input
+        *ngIf="inArgument.type === 'input'"
+        class="slds-input"
+        type="text"
+        [formControlName]="inArgument.key"
+        [placeholder]="inArgument.placeholder ? inArgument.placeholder : ''"
+        [attr.required]="inArgument.required ? true : null"
+      />
+      <textarea
+        *ngIf="inArgument.type === 'textarea'"
+        class="slds-textarea"
+        type="text"
+        [formControlName]="inArgument.key"
+        [placeholder]="inArgument.placeholder ? inArgument.placeholder : ''"
+        [attr.required]="inArgument.required ? true : null"
+      ></textarea>
+      <select
+        *ngIf="inArgument.type === 'select'"
+        class="slds-select"
+        [attr.required]="inArgument.required ? true : null"
+        [formControlName]="inArgument.key"
+      >
+        <option value="">Select…</option>
+        <option *ngFor="let option of inArgument.options">{{ option }}</option>
+      </select>
+      <jb-json-form *ngIf="inArgument.type === 'debug'"></jb-json-form>
+    </slds-form-element>
+    <slds-notification
+      [description]="inArgument.description ? inArgument.description : ''"
+      [linkText]="inArgument.linkText ? inArgument.linkText : ''"
+      [linkUrl]="inArgument.linkUrl ? inArgument.linkUrl : ''"
+    ></slds-notification>
+  </ng-container>
+</form>
