@@ -34,38 +34,7 @@ export class FormContainerComponent implements OnInit {
       .pipe(
         takeWhile(() => this.alive),
         tap((payload) => {
-          this.payload = payload;
-          payload.arguments.execute.inArguments.forEach(
-            (inArgument: IInArgument) => {
-              if (!inArgument.key || !inArgument.type) {
-                return;
-              }
-
-              // Build form
-              if (!this.form.get(inArgument.key)) {
-                this.form.addControl(
-                  inArgument.key,
-                  this.formBuilder.control(
-                    inArgument.value,
-                    inArgument.required ? [Validators.required] : []
-                  ),
-                  // Do not emit
-                  { emitEvent: false }
-                );
-              }
-
-              // Patch form
-              else {
-                this.form.patchValue(
-                  { [inArgument.key]: inArgument.value },
-                  // Do not emit
-                  { onlySelf: true, emitEvent: false }
-                );
-              }
-            }
-          );
-          // Trigger change detection
-          this.changeDetection.markForCheck();
+          this.buildAndUpdateForm(payload);
         })
       )
       .subscribe();
@@ -89,6 +58,39 @@ export class FormContainerComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  buildAndUpdateForm(payload: IPayload) {
+    this.payload = payload;
+    payload.arguments.execute.inArguments.forEach((inArgument: IInArgument) => {
+      if (!inArgument.key || !inArgument.type) {
+        return;
+      }
+
+      // Build form
+      if (!this.form.get(inArgument.key)) {
+        this.form.addControl(
+          inArgument.key,
+          this.formBuilder.control(
+            inArgument.value,
+            inArgument.required ? [Validators.required] : []
+          ),
+          // Do not emit
+          { emitEvent: false }
+        );
+      }
+
+      // Patch form
+      else {
+        this.form.patchValue(
+          { [inArgument.key]: inArgument.value },
+          // Do not emit
+          { onlySelf: true, emitEvent: false }
+        );
+      }
+    });
+    // Trigger change detection
+    this.changeDetection.markForCheck();
   }
 
   hasError(inArgument: IInArgument): boolean {

@@ -7,7 +7,6 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import { AppService } from './app.service';
 import { AuthGuard } from './auth.guard';
