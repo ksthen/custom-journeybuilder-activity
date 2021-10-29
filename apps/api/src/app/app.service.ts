@@ -36,18 +36,23 @@ export class AppService {
     };
 
     // TODO - Figure out what format to provide
-    const messageBody = {
-      ...this.decodeBody(body),
-    };
+
+    const decodedBody: any = this.decodeBody(body);
+
+    let payload = {};
+
+    decodedBody?.inArguments?.forEach((inArgument: any) => {
+      payload = { ...payload, ...{ [inArgument.key]: inArgument.value } };
+    });
 
     this.logger.log('Headers');
     this.logger.log(headers);
 
     this.logger.log('Body');
-    this.logger.log(messageBody);
+    this.logger.log(payload);
 
     // TODO Call Leanplum API and return response
-    return this.http.post(url, messageBody, config).pipe(
+    return this.http.post(url, payload, config).pipe(
       map((response) => {
         this.logger.log(response.data);
         return { status: 'Message sent ok' };
